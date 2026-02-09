@@ -40,7 +40,7 @@ public class WithdrawAxeNode extends LeafNode {
         
         boolean ready = BankHelper.ensure(Collections.singletonList(
             new ItemTarget(bestAxe, 1, canEquip)
-        ));
+        ), true); // Clean equipment (remove heavy armor)
 
         if (ready) {
              return Status.FAILURE; // We have what we need, move to next node (Banking or Chopping)

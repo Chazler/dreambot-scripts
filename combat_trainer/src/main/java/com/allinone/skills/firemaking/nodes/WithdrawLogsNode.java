@@ -23,11 +23,14 @@ public class WithdrawLogsNode extends LeafNode {
 
     @Override
     public Status execute() {
-        boolean hasLogs = Inventory.contains(i -> i.getName().contains("logs"));
+        // Robust check: Check for any items containing "logs" (case insensitive)
+        boolean hasLogs = Inventory.contains(i -> i != null && i.getName() != null && (i.getName().toLowerCase().contains("logs") || i.getName().equalsIgnoreCase("Logs")));
         boolean hasTinderbox = Inventory.contains("Tinderbox");
 
         if (hasLogs && hasTinderbox) {
              // We have logs and a tinderbox, proceed to burn
+             // If bank is open, close it to update state or just proceed
+             if (Bank.isOpen()) Bank.close();
              return Status.FAILURE; 
         }
 
@@ -40,10 +43,21 @@ public class WithdrawLogsNode extends LeafNode {
             return Status.RUNNING;
         }
         
-        // Deposit everything except tinderbox
-        if (!Inventory.isEmpty() && !Inventory.onlyContains("Tinderbox")) {
-            Bank.depositAllExcept("Tinderbox");
-            Sleep.sleepUntil(() -> Inventory.isEmpty() || Inventory.onlyContains("Tinderbox"), 2000);
+        // Smart Deposit: Only deposit junk (non-logs, non-tinderbox)
+        // Check filtering specifically for non-null items
+        boolean hasJunk = Inventory.all().stream().anyMatch(i -> 
+            i != null && 
+            i.getName() != null &&
+            !i.getName().equals("Tinderbox") && 
+            !i.getName().toLowerCase().contains("logs")
+        );
+        
+        if (hasJunk) {
+            log("Junked detected, depositing.");
+            Bank.depositAllExcept(i -> i != null && i.getName() != null && (i.getName().equals("Tinderbox") || i.getName().toLowerCase().contains("logs")));
+            Sleep.sleepUntil(() -> {
+                return !Inventory.contains(i -> i != null && i.getName() != null && !i.getName().equals("Tinderbox") && !i.getName().toLowerCase().contains("logs"));
+            }, 2000);
             return Status.RUNNING;
         }
 
@@ -72,8 +86,10 @@ public class WithdrawLogsNode extends LeafNode {
         
         // We have tinderbox, now withdraw logs
         if (Bank.withdrawAll(bestLog.getItemName())) {
+            log("Withdrawing logs.");
             Sleep.sleepUntil(() -> Inventory.contains(bestLog.getItemName()), 3000);
             Bank.close();
+            log("Logs withdrawn.");
             return Status.SUCCESS;
         }
 

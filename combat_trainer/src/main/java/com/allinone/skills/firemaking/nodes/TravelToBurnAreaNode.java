@@ -8,7 +8,7 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.interactive.Players;
 import com.allinone.framework.TravelHelper;
-import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import com.allinone.skills.firemaking.data.StaticBurnAreas;
 
 public class TravelToBurnAreaNode extends LeafNode {
 
@@ -20,26 +20,25 @@ public class TravelToBurnAreaNode extends LeafNode {
 
     @Override
     public Status execute() {
-        // ...Existing Logic for Area Selection...
-        Area burnArea = new Area(3160, 3480, 3175, 3495); // GE Area generic
-        Tile myLoc = Players.getLocal().getTile();
-        if (BankLocation.DRAYNOR.getArea(5).contains(myLoc)) {
-            burnArea = new Area(3092, 3240, 3100, 3246);
-        } else if (BankLocation.VARROCK_WEST.getArea(5).contains(myLoc)) {
-            burnArea = new Area(3180, 3435, 3192, 3442);
-        } else if (BankLocation.SEERS.getArea(5).contains(myLoc)) {
-            burnArea = new Area(2725, 3490, 2730, 3500); 
-        } else {
-            burnArea = new Area(3163, 3482, 3170, 3495); // GE Fire line
+        StaticBurnAreas.BurnArea target = StaticBurnAreas.getNearest();
+        if (target == null) 
+        {
+            log("Couldn't travel to burn area.");
+            blackboard.setCurrentStatus("No burn areas found.");
+            return Status.FAILURE;
         }
-        
-        if (burnArea.contains(myLoc)) {
+
+        if (target.getArea().contains(Players.getLocal())) {
              return Status.SUCCESS;
         }
+
+        if (Players.getLocal().isMoving()) {
+            return Status.RUNNING;
+        }
         
-        blackboard.setCurrentStatus("Walking to Burn Area");
-        // Use TravelHelper
-        TravelHelper.travelTo(burnArea);
+        log("Travelling to burn area");
+        blackboard.setCurrentStatus("Walking to Burn Area: " + target.getName());
+        TravelHelper.travelTo(target.getArea());
         
         return Status.RUNNING;
     }

@@ -71,7 +71,7 @@ public class WithdrawPickaxeNode extends LeafNode {
         
         boolean ready = BankHelper.ensure(Collections.singletonList(
             new ItemTarget(bestPickaxe, 1, canEquip)
-        ));
+        ), true); // Clean equipment (remove heavy armor)
 
         if (ready) {
              return Status.FAILURE; 

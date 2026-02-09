@@ -13,6 +13,7 @@ com\allinone\skills\fishing\data\FishingMethod.class
 com\allinone\skills\woodcutting\data\TreeType.class
 com\allinone\skills\woodcutting\nodes\FindTreeNode.class
 com\allinone\ui\painters\FishingPainter.class
+com\allinone\skills\firemaking\data\StaticBurnAreas.class
 com\allinone\framework\Sequence.class
 com\allinone\framework\ItemTarget.class
 com\allinone\skills\fishing\nodes\DropFishNode.class
@@ -63,6 +64,7 @@ com\allinone\skills\woodcutting\nodes\BankLogsNode.class
 com\allinone\skills\fishing\nodes\UpdateFishingStrategyNode.class
 com\allinone\ui\CombatPainter.class
 com\allinone\skills\combat\strategies\TargetScorer.class
+com\allinone\skills\firemaking\data\StaticBurnAreas$BurnArea.class
 com\allinone\skills\fishing\nodes\BankFishNode.class
 com\allinone\skills\mining\nodes\TravelToMiningSpotNode.class
 com\allinone\framework\AntiBan.class

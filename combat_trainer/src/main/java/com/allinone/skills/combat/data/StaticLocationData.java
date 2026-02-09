@@ -116,5 +116,17 @@ public class StaticLocationData {
             25000,
             50
         ));
+        
+        // Big Frogs (Lumbridge Swamp Caves)
+        ALL_LOCATIONS.add(new LocationDef(
+            "Big Frogs",
+            new Area(3190, 9540, 3235, 9600),
+            Arrays.asList("Big Frog"),
+            45,
+            false,
+            8,
+            28000,
+            70
+        ));
     }
 }

@@ -11,15 +11,51 @@ import java.util.List;
 public class BankHelper {
 
     /**
+     * Ensures items are present. Defaults to NOT cleaning other equipment.
+     */
+    public static boolean ensure(List<ItemTarget> targets) {
+        return ensure(targets, false);
+    }
+
+    /**
      * Ensures the player has the specified items in Inventory or Equipment.
      * Handles banking, withdrawing, and equipping.
      * 
      * @param targets List of items needed.
+     * @param cleanEquipment If true, will deposit all worn equipment that is NOT in the target list.
      * @return true if all requirements are met (items present and equipped if needed), false if actions are in progress.
      */
-    public static boolean ensure(List<ItemTarget> targets) {
+    public static boolean ensure(List<ItemTarget> targets, boolean cleanEquipment) {
         boolean missingItems = false;
         boolean needEquip = false;
+
+        // 0. Handle Equipment Cleaning (Dump Armor)
+        if (cleanEquipment) {
+            // Check if we are wearing anything NOT in targets
+            boolean wearingJunk = false;
+            for (org.dreambot.api.wrappers.items.Item item : Equipment.all()) {
+                if (item == null) continue;
+                String name = item.getName();
+                boolean isTarget = targets.stream().anyMatch(t -> t.getName().equals(name) && t.shouldEquip());
+                if (!isTarget) {
+                    wearingJunk = true;
+                    break;
+                }
+            }
+
+            if (wearingJunk) {
+                if (!Bank.isOpen()) {
+                    Bank.open();
+                    return false;
+                }
+                Logger.log("Dumping unnecessary equipment...");
+                Bank.depositAllEquipment();
+                Sleep.sleepUntil(Equipment::isEmpty, 2000);
+                // After dumping, we need to continue to check valid targets. 
+                // We might have just dumped our Pickaxe (needed) if we defined it in targets but depositAll removed it.
+                // Loop continues to withdraw section.
+            }
+        }
 
         // 1. Check State
         for (ItemTarget target : targets) {
