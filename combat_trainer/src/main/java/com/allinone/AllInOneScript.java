@@ -20,7 +20,7 @@ import java.util.Random;
     name = "All In One Trainer", 
     description = "Modular All-In-One Trainer using Behavior Trees", 
     author = "Copilot", 
-    version = 2.3, 
+    version = 2.4, 
     category = Category.MISC, 
     image = ""
 )
@@ -53,6 +53,7 @@ public class AllInOneScript extends AbstractScript {
         availableSkills.add(new FishingSkill());
         availableSkills.add(new FiremakingSkill());
         availableSkills.add(new MiningSkill());
+        availableSkills.add(new com.allinone.skills.smithing.SmithingSkill());
         
         // 3. Initial Selection
         pickNextSkill(null);

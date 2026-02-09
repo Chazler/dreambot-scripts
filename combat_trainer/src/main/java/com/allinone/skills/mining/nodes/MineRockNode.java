@@ -41,7 +41,9 @@ public class MineRockNode extends LeafNode {
         }
         
         // Safety check if rock was depleted (name changed to "Rocks" usually)
-        if (!rock.getName().equals(blackboard.getCurrentMiningSpot().getRockType().getObjectName())) {
+        if (blackboard.getCurrentMiningSpot() != null && 
+            rock.getName() != null && 
+            !rock.getName().equals(blackboard.getCurrentMiningSpot().getRockType().getObjectName())) {
              return Status.FAILURE;
         }
 

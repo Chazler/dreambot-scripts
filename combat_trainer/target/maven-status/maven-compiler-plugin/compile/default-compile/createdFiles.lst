@@ -2,8 +2,10 @@ com\allinone\skills\combat\data\StaticLocationData.class
 com\allinone\ui\painters\FiremakingPainter.class
 com\allinone\framework\Status.class
 com\allinone\framework\BankHelper.class
+com\allinone\skills\smithing\nodes\BankSmithingNode.class
 com\allinone\skills\mining\nodes\FindRockNode.class
 com\allinone\skills\firemaking\nodes\WithdrawLogsNode.class
+com\allinone\skills\smithing\data\SmithingLocation.class
 com\allinone\framework\CompositeNode.class
 com\allinone\skills\mining\data\MiningSpot.class
 com\allinone\skills\combat\nodes\RegearNode$State.class
@@ -14,11 +16,14 @@ com\allinone\skills\woodcutting\data\TreeType.class
 com\allinone\skills\woodcutting\nodes\FindTreeNode.class
 com\allinone\ui\painters\FishingPainter.class
 com\allinone\skills\firemaking\data\StaticBurnAreas.class
+com\allinone\skills\smithing\data\SmithingType.class
 com\allinone\framework\Sequence.class
 com\allinone\framework\ItemTarget.class
 com\allinone\skills\fishing\nodes\DropFishNode.class
 com\allinone\skills\combat\nodes\CheckHealthNode.class
+com\allinone\skills\smithing\nodes\SmithItemNode.class
 com\allinone\skills\firemaking\FiremakingSkill.class
+com\allinone\skills\smithing\nodes\SmeltNode.class
 com\allinone\framework\LeafNode.class
 com\allinone\framework\TravelHelper.class
 com\allinone\skills\mining\nodes\WithdrawPickaxeNode.class
@@ -34,6 +39,7 @@ com\allinone\skills\mining\data\StaticMiningSpots.class
 com\allinone\framework\SkillSet.class
 com\allinone\skills\fishing\data\StaticFishingSpots.class
 com\allinone\skills\woodcutting\nodes\CollectNestNode.class
+com\allinone\skills\smithing\SmithingSkill.class
 com\allinone\ui\painters\WoodcuttingPainter.class
 com\allinone\AllInOneScript.class
 com\allinone\skills\woodcutting\nodes\TravelToTreeAreaNode.class
@@ -45,7 +51,9 @@ com\allinone\skills\mining\MiningSkill.class
 com\allinone\skills\mining\nodes\MineRockNode.class
 com\allinone\skills\combat\data\LocationDef.class
 com\allinone\skills\combat\strategies\GearScorer.class
+com\allinone\skills\smithing\strategies\SmithingManager.class
 com\allinone\framework\TravelHelper$TeleportLocation.class
+com\allinone\ui\painters\SmithingPainter.class
 com\allinone\skills\firemaking\data\FiremakingLog.class
 com\allinone\skills\woodcutting\WoodcuttingSkill.class
 com\allinone\skills\firemaking\nodes\BurnLogNode.class
@@ -54,6 +62,7 @@ com\allinone\skills\combat\data\GearItem.class
 com\allinone\framework\Node.class
 com\allinone\skills\fishing\FishingSkill.class
 com\allinone\skills\woodcutting\data\StaticWoodcuttingSpots.class
+com\allinone\skills\smithing\data\SmithingItem.class
 com\allinone\skills\combat\data\StaticGearData.class
 com\allinone\skills\combat\nodes\ManageAttackStyleNode$1.class
 com\allinone\ui\painters\MiningPainter.class
@@ -66,6 +75,7 @@ com\allinone\ui\CombatPainter.class
 com\allinone\skills\combat\strategies\TargetScorer.class
 com\allinone\skills\firemaking\data\StaticBurnAreas$BurnArea.class
 com\allinone\skills\fishing\nodes\BankFishNode.class
+com\allinone\skills\smithing\nodes\TravelToSmithingLocationNode.class
 com\allinone\skills\mining\nodes\TravelToMiningSpotNode.class
 com\allinone\framework\AntiBan.class
 com\allinone\skills\combat\CombatSkill.class

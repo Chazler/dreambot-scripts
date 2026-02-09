@@ -61,7 +61,7 @@ public class WithdrawPickaxeNode extends LeafNode {
         // If we are about to use BankHelper, and we have items that are NOT the bestPickaxe, 
         // and we are at the bank, Deposit them.
         if (Bank.isOpen()) {
-            boolean hasJunk = Inventory.all().stream().anyMatch(i -> !i.getName().equals(bestPickaxe));
+            boolean hasJunk = Inventory.all().stream().anyMatch(i -> i != null && i.getName() != null && !i.getName().equals(bestPickaxe));
             if (hasJunk) {
                  Logger.log("Depositing junk before withdrawing best pickaxe...");
                  Bank.depositAllExcept(bestPickaxe);

@@ -35,18 +35,24 @@ public class TravelHelper {
      * Travels to the center of the area.
      */
     public static void travelTo(Area area) {
-        if (area == null) return;
+        if (area == null) {
+            Logger.log("TravelHelper: Area is null");
+            return;
+        }
         if (area.contains(Players.getLocal())) {
+            Logger.log("TravelHelper: Already in area");
             return;
         }
         
         // Human-like: Don't spam click if moving
         if (Players.getLocal().isMoving()) {
+             // Logger.log("TravelHelper: Player is moving (Area)"); // Verbose
              return;
         }
         
         AntiBan.sleepStatic(600, 250);
         Tile randomTile = area.getRandomTile();
+        Logger.log("TravelHelper: Area travel -> Random Tile: " + randomTile);
         travelTo(randomTile);
     }
 
@@ -54,28 +60,36 @@ public class TravelHelper {
      * Intelligent travel using Teleports if distance is great, otherwise Walking.
      */
     public static void travelTo(Tile target) {
-        if (target == null) return;
+        if (target == null){
+            Logger.log("TravelHelper: Target is null");
+            return;
+        }
         
         // 1. Human-like: Check moving status
         Tile dest = Walking.getDestination();
         if (Players.getLocal().isMoving() && dest != null && dest.distance(target) < 5) {
-             return;
+            // Logger.log("TravelHelper: Already moving near target");
+            return;
         }
 
         Tile myPos = Players.getLocal().getTile();
         double distanceToTarget = myPos.distance(target);
+        Logger.log("TravelHelper: Dist to target: " + (int)distanceToTarget + " Tile: " + target);
         
         // 2. Human-like: Toggle Run (Enable if > 20% and not enabled)
         // Add random condition so we don't toggle exactly at 20 every time
         if (Walking.getRunEnergy() > 20 && !Walking.isRunEnabled() && Math.random() > 0.5) {
-             Walking.toggleRun();
-             AntiBan.sleepStatic(400, 100);
+            Walking.toggleRun();
+            AntiBan.sleepStatic(400, 100);
         }
 
         // If we are close, just walk
         if (distanceToTarget < 20) {
+            Logger.log("TravelHelper: Short range walk");
             if (Walking.walk(target)) {
                 AntiBan.sleepStatic(900, 150); // Wait for reaction
+            } else {
+                Logger.log("TravelHelper: Short range walk failed");
             }
             return;
         }
@@ -110,8 +124,11 @@ public class TravelHelper {
 
         // Default: Walk
         // If web walking is enabled, this handles pathfinding
+        Logger.log("TravelHelper: Long range walk/WebWalk");
         if (Walking.walk(target)) {
             AntiBan.sleepStatic(900, 150);
+        } else {
+             Logger.log("TravelHelper: WebWalk failed");
         }
     }
 }

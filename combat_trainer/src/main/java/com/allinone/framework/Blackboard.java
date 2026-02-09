@@ -24,6 +24,7 @@ public class Blackboard {
     private boolean isBankingNeeded;
     private String currentStatus = "Initializing...";
     private boolean gearChecked = false;
+    private boolean forceFiremakingRelocate = false;
     
     // Woodcutting
     private WoodcuttingSpot currentWoodcuttingSpot;
@@ -117,5 +118,13 @@ public class Blackboard {
 
     public void setBankingNeeded(boolean bankingNeeded) {
         isBankingNeeded = bankingNeeded;
+    }
+
+    public boolean isForceFiremakingRelocate() {
+        return forceFiremakingRelocate;
+    }
+
+    public void setForceFiremakingRelocate(boolean forceFiremakingRelocate) {
+        this.forceFiremakingRelocate = forceFiremakingRelocate;
     }
 }

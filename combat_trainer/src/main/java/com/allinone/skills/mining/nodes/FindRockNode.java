@@ -44,10 +44,9 @@ public class FindRockNode extends LeafNode {
             if (isOtherPlayerMining(r)) return false;
             
             // Name Filter
-            // If spot is TIN, we allow Tin OR Copper? 
-            // Or only if we are in "Varrock East".
-            // Let's implement dynamic type matching for low levels.
             String targetName = spot.getRockType().getObjectName();
+            
+            if (r.getName() == null) return false; // Basic Null Check
             
             boolean nameMatch = r.getName().equals(targetName);
             
@@ -62,6 +61,10 @@ public class FindRockNode extends LeafNode {
             return nameMatch && r.hasAction("Mine");
         });
         
+        if (rock != null) {
+            blackboard.setCurrentObject(rock);
+            return Status.SUCCESS;
+        }
         
         blackboard.setCurrentStatus("Searching for " + spot.getRockType().getObjectName() + "...");
         return Status.FAILURE;
