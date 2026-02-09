@@ -27,6 +27,9 @@ public class Blackboard {
     // Woodcutting
     private WoodcuttingSpot currentWoodcuttingSpot;
     
+    // Firemaking
+    private com.allinone.skills.firemaking.data.FiremakingLog currentFiremakingLog;
+    
     // Fishing
     private FishingSpot currentFishingSpot;
 
@@ -38,6 +41,9 @@ public class Blackboard {
 
     public Blackboard() {
     }
+
+    public com.allinone.skills.firemaking.data.FiremakingLog getCurrentFiremakingLog() { return currentFiremakingLog; }
+    public void setCurrentFiremakingLog(com.allinone.skills.firemaking.data.FiremakingLog log) { this.currentFiremakingLog = log; }
 
     public boolean shouldForceStopSkill() { return forceStopSkill; }
     public void setForceStopSkill(boolean forceStopSkill) { this.forceStopSkill = forceStopSkill; }

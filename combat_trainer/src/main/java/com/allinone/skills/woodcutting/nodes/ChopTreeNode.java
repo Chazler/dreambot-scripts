@@ -43,7 +43,7 @@ public class ChopTreeNode extends LeafNode {
         if (tree.interact("Chop down")) {
             blackboard.setCurrentStatus("Chopping " + tree.getName());
             // Human-like: Wait a bit after clicking before doing anything else
-            blackboard.getAntiBan().sleep(900, 300);
+            blackboard.getAntiBan().sleep(1200, 400);
             blackboard.getAntiBan().sleepUntil(() -> Players.getLocal().isAnimating(), 5000);
             return Status.RUNNING;
         }

@@ -10,8 +10,13 @@ public class FishingSpot {
     private final boolean shouldBank;
     private final boolean isMembers;
     private final String baitItem; // Optional, null if none
+    private final double estimatedXp;
 
     public FishingSpot(String npcName, Area area, FishingMethod method, int levelRequired, boolean shouldBank, boolean isMembers, String baitItem) {
+        this(npcName, area, method, levelRequired, shouldBank, isMembers, baitItem, 10.0);
+    }
+    
+    public FishingSpot(String npcName, Area area, FishingMethod method, int levelRequired, boolean shouldBank, boolean isMembers, String baitItem, double estimatedXp) {
         this.npcName = npcName;
         this.area = area;
         this.method = method;
@@ -19,6 +24,7 @@ public class FishingSpot {
         this.shouldBank = shouldBank;
         this.isMembers = isMembers;
         this.baitItem = baitItem;
+        this.estimatedXp = estimatedXp;
     }
 
     public String getNpcName() { return npcName; }
@@ -28,4 +34,5 @@ public class FishingSpot {
     public boolean shouldBank() { return shouldBank; }
     public boolean isMembers() { return isMembers; }
     public String getBaitItem() { return baitItem; }
+    public double getEstimatedXp() { return estimatedXp; }
 }

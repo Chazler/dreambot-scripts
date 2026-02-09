@@ -1,5 +1,6 @@
 package com.allinone.skills.woodcutting.nodes;
 
+import com.allinone.framework.AntiBan;
 import com.allinone.framework.Blackboard;
 import com.allinone.framework.LeafNode;
 import com.allinone.framework.Status;
@@ -34,6 +35,7 @@ public class FindTreeNode extends LeafNode {
         if (tree != null) {
             blackboard.setCurrentObject(tree);
             blackboard.setCurrentStatus("Found tree: " + tree.getName());
+            AntiBan.sleepStatic(800, 400); // Short pause before next action
             return Status.SUCCESS;
         }
         

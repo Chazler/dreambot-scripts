@@ -20,11 +20,13 @@ public class FindFishNode extends LeafNode {
         FishingSpot spot = blackboard.getCurrentFishingSpot();
         if (spot == null) return Status.FAILURE;
         
+        // Search for closest spot. Allow spots outside the exact area polygon 
+        // as long as they are close to the player or the area center (spots are in water, area is usually land).
         NPC fishSpot = NPCs.closest(n -> 
             n != null && 
             n.getName().equals(spot.getNpcName()) && 
             n.hasAction(spot.getMethod().getAction()) &&
-            spot.getArea().contains(n)
+            (spot.getArea().contains(n) || n.distance(spot.getArea().getCenter()) < 15)
         );
         
         if (fishSpot != null) {

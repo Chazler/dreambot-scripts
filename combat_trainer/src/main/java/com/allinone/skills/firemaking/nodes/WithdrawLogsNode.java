@@ -54,6 +54,8 @@ public class WithdrawLogsNode extends LeafNode {
             blackboard.setForceStopSkill(true);
             return Status.RUNNING; // Return RUNNING to block the Selector from proceeding to Travel
         }
+        
+        blackboard.setCurrentFiremakingLog(bestLog);
 
         // Ensure we have a tinderbox
         if (!Inventory.contains("Tinderbox")) {

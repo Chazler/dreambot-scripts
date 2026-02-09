@@ -8,6 +8,11 @@ import com.allinone.skills.woodcutting.data.WoodcuttingSpot;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 
+import com.allinone.skills.woodcutting.data.TreeType;
+import org.dreambot.api.methods.interactive.Players;
+import java.util.Comparator;
+import java.util.List;
+
 public class UpdateWoodcuttingStrategyNode extends LeafNode {
 
     private final Blackboard blackboard;
@@ -18,18 +23,29 @@ public class UpdateWoodcuttingStrategyNode extends LeafNode {
 
     @Override
     public Status execute() {
-        // Re-evaluate best spot based on level
         int level = Skills.getRealLevel(Skill.WOODCUTTING);
-        WoodcuttingSpot best = StaticWoodcuttingSpots.getBestSpot(level);
         
+        // 1. Determine best tree type
+        TreeType bestType = StaticWoodcuttingSpots.getBestTreeType(level);
         WoodcuttingSpot current = blackboard.getCurrentWoodcuttingSpot();
         
-        if (current == null || !current.getName().equals(best.getName())) {
-            blackboard.setCurrentWoodcuttingSpot(best);
-            log("Strategies Updated: New Spot -> " + best.getName());
+        // 2. If we already have a spot of the correct type, stick with it
+        if (current != null && current.getTreeType() == bestType) {
+            return Status.FAILURE;
         }
         
-        // Return FAILURE so the Selector continues to the next node (Logic)
+        // 3. Find closest spot of that type
+        List<WoodcuttingSpot> candidates = StaticWoodcuttingSpots.getSpots(bestType);
+        WoodcuttingSpot bestSpot = candidates.stream()
+            .min(Comparator.comparingDouble(s -> s.getArea().getCenter().distance(Players.getLocal())))
+            .orElse(null);
+            
+        // 4. Update if found
+        if (bestSpot != null) {
+            blackboard.setCurrentWoodcuttingSpot(bestSpot);
+            log("Strategies Updated: New Spot -> " + bestSpot.getName() + " (Type: " + bestType + ")");
+        }
+        
         return Status.FAILURE;
     }
 }

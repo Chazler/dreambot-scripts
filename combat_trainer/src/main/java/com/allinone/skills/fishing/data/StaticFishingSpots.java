@@ -15,25 +15,27 @@ public class StaticFishingSpots {
     static {
         // Shrimps - Draynor (F2P) - Level 1
         SPOTS.add(new FishingSpot("Fishing spot", new Area(3084, 3226, 3089, 3233), 
-                  FishingMethod.NET, 1, false, false, null));
+                  FishingMethod.NET, 1, false, false, null, 10.0));
+
+        // Shrimps - Lumbridge Swamp (F2P) - Level 1
+        SPOTS.add(new FishingSpot("Fishing spot", new Area(3235, 3145, 3248, 3158), 
+                  FishingMethod.NET, 1, false, false, null, 10.0));
 
         // Trout/Salmon - Barbarian Village (F2P) - Level 20
         // Using Fly fishing rod + Feathers
         SPOTS.add(new FishingSpot("Rod Fishing spot", new Area(3100, 3422, 3110, 3435), 
-                  FishingMethod.FLY, 20, false, false, "Feather"));
+                  FishingMethod.FLY, 20, false, false, "Feather", 60.0));
 
         // Lobsters - Karamja (F2P) - Level 40
-        // Requires travelling, which might be tricky with just simple walking (boat needed)
-        // Let's stick to simple walkable areas or safe spots first.
-        // F2P Lobsters usually bank at Draynor or drop. Distant.
+        // ...
         // Let's add Cage Fishing at Catherby (Members)
         SPOTS.add(new FishingSpot("Cage Fishing spot", new Area(2835, 3428, 2860, 3434),
-                  FishingMethod.CAGE, 40, true, true, null));
+                  FishingMethod.CAGE, 40, true, true, null, 90.0));
                   
         // Sharks - Fishing Guild (Members) - Level 76
         // Need guild access logic? Or just Catherby Sharks
         SPOTS.add(new FishingSpot("Net/Harpoon Fishing spot", new Area(2835, 3428, 2860, 3434),
-                  FishingMethod.HARPOON, 76, true, true, null)); // Catherby Sharks
+                  FishingMethod.HARPOON, 76, true, true, null, 110.0)); // Catherby Sharks
     }
 
     public static FishingSpot getBestSpot(int level) {

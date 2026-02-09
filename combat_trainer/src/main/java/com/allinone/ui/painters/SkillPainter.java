@@ -63,6 +63,14 @@ public abstract class SkillPainter {
         my += 20;
         g.drawString("XP Gained: " + gained + " (" + perHour + "/hr)", mx, my);
         g.drawString("Level: " + Skills.getRealLevel(skill) + " (+"+ (Skills.getRealLevel(skill) - getStartLevel()) +")", mx + 200, my);
+        
+        // Custom Hook
+        my += 20;
+        paintCustom(g, mx, my);
+    }
+    
+    protected void paintCustom(Graphics g, int x, int y) {
+        // Default no-op
     }
     
     protected Color getBorderColor() {

@@ -21,17 +21,26 @@ public class FishNode extends LeafNode {
         NPC spot = blackboard.getCurrentTarget();
         FishingSpot def = blackboard.getCurrentFishingSpot();
         
-        if (Players.getLocal().isAnimating()) {
+        // Double check we are not already fishing
+        // Animation 621, 622, 623 etc are fishing. -1 is idle.
+        if (Players.getLocal().getAnimation() != -1) {
             return Status.RUNNING;
         }
 
         if (spot == null || !spot.exists() || def == null) {
-             return Status.FAILURE;
+            // Try to find it again? No, let Sequence fail so FindFishNode runs again
+            return Status.FAILURE;
         }
         
+        if (!spot.canReach()) {
+            // Should be handled by travel, but if we are close, walk to it?
+            // Actually interact usually handles short distance.
+            log("Spot unreachable?");
+        }
+
         if (spot.interact(def.getMethod().getAction())) {
             blackboard.setCurrentStatus("Fishing...");
-            Sleep.sleepUntil(() -> Players.getLocal().isAnimating(), 3000);
+            Sleep.sleepUntil(() -> Players.getLocal().getAnimation() != -1, 4000);
             return Status.RUNNING;
         }
 

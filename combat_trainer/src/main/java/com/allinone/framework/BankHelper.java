@@ -58,7 +58,30 @@ public class BankHelper {
             return true;
         }
 
-        // 3. Handle Missing Items (Banking)
+        // 3. Handle Equipping First (if we have items in inventory but need to equip)
+        // Optimization: If we have the items to equip, do it NOW before banking for food/fills
+        if (needEquip && !missingItems) {
+             if (Bank.isOpen()) {
+                Bank.close();
+                Sleep.sleepUntil(() -> !Bank.isOpen(), 3000);
+                return false;
+             }
+             
+             for (ItemTarget target : targets) {
+                if (target.shouldEquip() && !Equipment.contains(target.getName()) && Inventory.contains(target.getName())) {
+                    Logger.log("Equipping: " + target.getName());
+                    if (!Inventory.interact(target.getName(), "Wear")) {
+                        if (!Inventory.interact(target.getName(), "Wield")) {
+                            Inventory.interact(target.getName(), "Equip");
+                        }
+                    }
+                    Sleep.sleepUntil(() -> Equipment.contains(target.getName()), 3000);
+                }
+            }
+            return false;
+        }
+
+        // 4. Handle Missing Items (Banking)
         if (missingItems) {
             if (!Bank.isOpen()) {
                 if (Bank.open()) {
@@ -81,8 +104,12 @@ public class BankHelper {
 
             for (ItemTarget target : targets) {
                 // Check satisfaction again
-                if (target.shouldEquip() && Equipment.contains(target.getName())) continue;
-                if (!target.shouldFill() && Inventory.count(target.getName()) >= target.getAmount()) continue;
+                if (target.shouldEquip()) {
+                    // Check Equipment OR Inventory (since we just need to possess it to satisfy 'missingItems' check next loop)
+                    if (Equipment.contains(target.getName()) || Inventory.contains(target.getName())) continue;
+                } else {
+                     if (!target.shouldFill() && Inventory.count(target.getName()) >= target.getAmount()) continue;
+                }
                 
                 // Withdraw
                 if (Bank.contains(target.getName())) {
@@ -104,12 +131,16 @@ public class BankHelper {
                     Logger.log("Bank missing required item: " + target.getName());
                 }
             }
+            
+            // If we grabbed equipment, logic will loop:
+            // Next tick: missingItems = false, needEquip = true.
+            // Then checks block 3 (Handle Equipping) -> Closes Bank -> Equips.
             return false;
         }
 
-        // 4. Handle Equipping (Must close bank usually to be safe/standard)
+        // 5. Final fallback for equipping (if missingItems blocked the first check)
         if (needEquip) {
-            if (Bank.isOpen()) {
+             if (Bank.isOpen()) {
                 Bank.close();
                 Sleep.sleepUntil(() -> !Bank.isOpen(), 3000);
                 return false;
@@ -117,17 +148,10 @@ public class BankHelper {
             
             for (ItemTarget target : targets) {
                 if (target.shouldEquip() && !Equipment.contains(target.getName()) && Inventory.contains(target.getName())) {
-                    Logger.log("Equipping: " + target.getName());
-                    // Try different action names
-                    if (!Inventory.interact(target.getName(), "Wear")) {
-                        if (!Inventory.interact(target.getName(), "Wield")) {
-                            Inventory.interact(target.getName(), "Equip");
-                        }
-                    }
-                    Sleep.sleepUntil(() -> Equipment.contains(target.getName()), 3000);
+                     // ... equipping logic duplicated or shared ... 
+                     // Let's rely on the next tick hitting Block 3.
                 }
             }
-            return false;
         }
 
         return false; // Should be unreachable if logic is sound
