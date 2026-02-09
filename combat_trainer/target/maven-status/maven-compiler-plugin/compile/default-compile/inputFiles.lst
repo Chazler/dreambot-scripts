@@ -1,24 +1,61 @@
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\data\LocationDef.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\ui\CombatPainter.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\framework\Node.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\data\GearItem.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\data\StaticLocationData.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\nodes\AttackNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\strategies\TargetScorer.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\framework\AntiBan.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\data\StaticGearData.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\nodes\CheckHealthNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\strategies\GearScorer.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\nodes\TravelNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\strategies\LocationScorer.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\CombatTrainer.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\nodes\UpdateStrategyNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\nodes\ManageAttackStyleNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\framework\CompositeNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\framework\Selector.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\framework\Blackboard.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\nodes\RegearNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\nodes\AcquireTargetNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\framework\LeafNode.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\framework\Status.java
-C:\Users\Joeri\OneDrive\Documenten\GitHub\DreambotScripts\combat_trainer\src\main\java\com\combat_trainer\framework\Sequence.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\ChopTreeNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\data\StaticGearData.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\TravelNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\TravelHelper.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\data\StaticFishingSpots.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\UpdateFishingStrategyNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\AntiBan.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\firemaking\FiremakingSkill.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\ItemTarget.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\painters\WoodcuttingPainter.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\painters\FishingPainter.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\AttackNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\data\FishingSpot.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\LeafNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\AcquireTargetNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\RegearNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\data\TreeType.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\data\WoodcuttingSpot.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\TravelToTreeAreaNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\Status.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\FishingSkill.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\Blackboard.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\data\LocationDef.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\FindFishNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\SkillSet.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\data\GearItem.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\strategies\LocationScorer.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\WithdrawFishingGearNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\CombatPainter.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\WithdrawAxeNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\data\FishingMethod.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\firemaking\data\FiremakingLog.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\strategies\TargetScorer.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\painters\SkillPainter.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\data\StaticLocationData.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\firemaking\nodes\TravelToBurnAreaNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\BankLogsNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\strategies\GearScorer.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\Selector.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\CombatSkill.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\TravelToFishNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\UpdateStrategyNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\Sequence.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\firemaking\nodes\BurnLogNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\AllInOneScript.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\CompositeNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\DropFishNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\data\StaticWoodcuttingSpots.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\UpdateWoodcuttingStrategyNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\CollectNestNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\BankFishNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\Node.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\CheckHealthNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\DropLogNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\FishNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\WoodcuttingSkill.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\painters\FiremakingPainter.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\BankHelper.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\firemaking\nodes\WithdrawLogsNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\ManageAttackStyleNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\FindTreeNode.java
