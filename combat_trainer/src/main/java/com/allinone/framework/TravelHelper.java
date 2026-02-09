@@ -45,6 +45,7 @@ public class TravelHelper {
              return;
         }
         
+        AntiBan.sleepStatic(600, 250);
         Tile randomTile = area.getRandomTile();
         travelTo(randomTile);
     }

@@ -1,5 +1,7 @@
 package com.allinone.skills.combat.nodes;
 
+import com.allinone.framework.BankHelper;
+import com.allinone.framework.ItemTarget;
 import com.allinone.skills.combat.data.GearItem;
 import com.allinone.skills.combat.data.StaticGearData;
 import com.allinone.framework.Blackboard;
@@ -11,9 +13,8 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
-import org.dreambot.api.wrappers.items.Item;
-import org.dreambot.api.utilities.Sleep;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,128 +22,113 @@ import java.util.stream.Collectors;
 public class RegearNode extends LeafNode {
 
     private final Blackboard blackboard;
-    private boolean initialDepositDone = false;
-    private boolean bankingCompleted = false;
-
     private static final String[] FOOD_NAMES = {"Shark", "Monkfish", "Swordfish", "Lobster", "Tuna", "Salmon", "Trout", "Bread", "Shrimps"};
+    
+    // State machine to enforce "Deposit -> Gear -> Food" order
+    private enum State {
+        CHECK_STATE, DEPOSIT_ALL, PREPARE_GEAR, PREPARE_FOOD, FINISH
+    }
+    
+    private State state = State.CHECK_STATE;
+    private List<ItemTarget> gearTargets = null;
+    private List<ItemTarget> foodTargets = null;
 
     public RegearNode(Blackboard blackboard) {
-        super();
-        this.blackboard = blackboard;
+         this.blackboard = blackboard;
     }
 
     @Override
     public Status execute() {
-        // Optimization: If we have food and a weapon, assume we are good to fight.
-        // User Request: "when the player is wearing the best gear available ... and has enough food ... it should not go to the bank"
+        // Optimization: if fully ready, skip regear
         boolean hasFood = Inventory.contains(i -> i.hasAction("Eat"));
-         // Simple check: do we have something in the weapon slot?
         boolean hasWeapon = !Equipment.isSlotEmpty(EquipmentSlot.WEAPON);
 
         if (hasFood && hasWeapon) {
-             // We are combat ready. Do not force bank.
-             blackboard.setGearChecked(true); // Persist that we are "checked"
+             blackboard.setGearChecked(true); 
+             state = State.CHECK_STATE;
              return Status.SUCCESS;
         }
 
         if (blackboard.isGearChecked()) {
-            // If we flagged as checked, and still have no food/weapon, maybe we are just dry?
-            // But if we returned SUCCESS above, we wouldn't be here unless !hasFood.
-            // So if !hasFood, we continue to banking logic below.
-            // BUT, if we just finished banking, isGearChecked is true.
-            // We need to allow this node to return SUCCESS if we are done.
             return Status.SUCCESS; 
         }
 
-        blackboard.setCurrentStatus("Re-gearing at Bank");
+        blackboard.setCurrentStatus("Re-gearing: " + state.name());
 
-        // Phase 1: Banking
-        if (!bankingCompleted) {
-            if (!Bank.isOpen()) {
-                if (Bank.open()) {
-                    return Status.RUNNING;
-                } else {
+        switch (state) {
+            case CHECK_STATE:
+                if (!Bank.isOpen()) {
+                    Bank.open();
                     return Status.RUNNING;
                 }
-            }
-            
-            // Bank is open
-            if (!initialDepositDone) {
-                 if (!Inventory.isEmpty()) {
-                     Bank.depositAllItems();
-                     blackboard.getAntiBan().sleep(600, 150);
-                     return Status.RUNNING;
-                 }
-                 initialDepositDone = true;
-            }
-            
-            boolean actionTaken = false;
-            
-            // 1. Withdraw Gear
-            for (EquipmentSlot slot : new EquipmentSlot[]{
-                EquipmentSlot.WEAPON, EquipmentSlot.CHEST, EquipmentSlot.LEGS, 
-                EquipmentSlot.SHIELD, EquipmentSlot.HAT, EquipmentSlot.AMULET, 
-                EquipmentSlot.FEET, EquipmentSlot.HANDS
-            }) {
-                GearItem bestAvailable = findBestAvailable(slot);
                 
-                if (bestAvailable != null) {
-                    boolean storedInBank = Bank.contains(bestAvailable.getItemName());
-                    boolean wearing = Equipment.contains(bestAvailable.getItemName());
-                    boolean inInv = Inventory.contains(bestAvailable.getItemName());
-
-                    if (!wearing && !inInv && storedInBank) {
-                         log("Withdrawing " + bestAvailable.getItemName());
-                         Bank.withdraw(bestAvailable.getItemName());
-                         actionTaken = true;
-                         blackboard.getAntiBan().sleep(600, 150);
-                    }
+                // Calculate requirements once
+                gearTargets = calculateBestGear();
+                foodTargets = calculateFood();
+                state = State.DEPOSIT_ALL;
+                return Status.RUNNING;
+                
+            case DEPOSIT_ALL:
+                // Ensure inventory is clean before starting
+                if (BankHelper.depositAll()) {
+                    state = State.PREPARE_GEAR;
                 }
-            }
-            
-            // 2. Withdraw Food
-            if (!Inventory.contains(i -> i.hasAction("Eat"))) {
-                 for (String foodName : FOOD_NAMES) {
-                     if (Bank.contains(foodName)) {
-                         log("Withdrawing food: " + foodName);
-                         Bank.withdraw(foodName, 10);
-                         actionTaken = true;
-                         blackboard.getAntiBan().sleep(600, 150);
-                         break; // Found one food type
-                     }
-                 }
-            }
+                return Status.RUNNING;
+                
+            case PREPARE_GEAR:
+                // Withdraw + Equip Gear
+                if (BankHelper.ensure(gearTargets)) {
+                    state = State.PREPARE_FOOD;
+                }
+                return Status.RUNNING;
+                
+            case PREPARE_FOOD:
+                // Withdraw Food (Inventory fill)
+                if (BankHelper.ensure(foodTargets)) {
+                    state = State.FINISH;
+                }
+                return Status.RUNNING;
 
-            if (actionTaken) {
-                return Status.RUNNING;
-            } else {
-                bankingCompleted = true;
-                return Status.RUNNING;
+            case FINISH:
+                if (Bank.isOpen()) {
+                    Bank.close();
+                    return Status.RUNNING;
+                }
+                blackboard.setGearChecked(true);
+                state = State.CHECK_STATE;
+                return Status.SUCCESS;
+        }
+
+        return Status.FAILURE;
+    }
+
+    private List<ItemTarget> calculateBestGear() {
+        List<ItemTarget> targets = new ArrayList<>();
+        for (EquipmentSlot slot : new EquipmentSlot[]{
+            EquipmentSlot.WEAPON, EquipmentSlot.CHEST, EquipmentSlot.LEGS, 
+            EquipmentSlot.SHIELD, EquipmentSlot.HAT, EquipmentSlot.AMULET, 
+            EquipmentSlot.FEET, EquipmentSlot.HANDS
+        }) {
+            GearItem bestAvailable = findBestAvailable(slot);
+            if (bestAvailable != null) {
+                // We want 1 of this item, and it SHOULD be equipped
+                targets.add(new ItemTarget(bestAvailable.getItemName(), 1, true));
             }
         }
-        
-        // Phase 2: Finishing Up
-        if (Bank.isOpen()) {
-            Bank.close();
-            Sleep.sleepUntil(() -> !Bank.isOpen(), 3000);
-            return Status.RUNNING;
+        return targets;
+    }
+    
+    private List<ItemTarget> calculateFood() {
+        List<ItemTarget> targets = new ArrayList<>();
+        for (String foodName : FOOD_NAMES) {
+             if (Bank.contains(foodName)) {
+                 // Found best food available. Request 14.
+                 // Note: ItemTarget(name, amount, equip?)
+                 targets.add(new ItemTarget(foodName, 14, false)); 
+                 break; 
+             }
         }
-        
-        // Equip Phase with Validation
-        equipBestFromInventory();
-        
-        // Optional: Deposit junk loop could go here if we wanted to be perfectly clean, 
-        // but 'Deposit All' at start covers most cases. 
-        // If we swapped items (e.g. Wooden Shield unequipped), it is now in inventory.
-        // We should PROBABLY deposit it.
-        // For now, let's just mark complete. The user simply wants the correct gear on.
-        
-        blackboard.setGearChecked(true);
-        // Reset local flags
-        initialDepositDone = false;
-        bankingCompleted = false;
-        
-        return Status.SUCCESS; 
+        return targets;
     }
 
     private GearItem findBestAvailable(EquipmentSlot slot) {
@@ -170,35 +156,5 @@ public class RegearNode extends LeafNode {
             }
         }
         return null;
-    }
-
-    private void equipBestFromInventory() {
-         for (Item item : Inventory.all()) {
-             if (item != null && (item.hasAction("Wear") || item.hasAction("Wield"))) {
-                  // Validate: Is this item actually the BEST for its slot?
-                  // If not, DO NOT EQUIP IT.
-                  // This prevents the infinite loop of equipping the wooden shield back.
-                  
-                  // We need to guess the slot or look it up.
-                  // Ideally we match name against our StaticGearData
-                  EquipmentSlot slot = getSlotForItem(item.getName());
-                  if (slot != null) {
-                      GearItem bestForSlot = findBestAvailable(slot);
-                      if (bestForSlot != null && bestForSlot.getItemName().equals(item.getName())) {
-                          item.interact("Wear");
-                          item.interact("Wield");
-                          blackboard.getAntiBan().sleep(300, 100);
-                      }
-                  }
-             }
-         }
-    }
-    
-    private EquipmentSlot getSlotForItem(String name) {
-        return StaticGearData.ALL_GEAR.stream()
-                .filter(g -> g.getItemName().equals(name))
-                .map(GearItem::getSlot)
-                .findFirst()
-                .orElse(null);
     }
 }

@@ -3,6 +3,7 @@ package com.allinone.framework;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -11,8 +12,11 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
+import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.interactive.Entity;
 // Mouse removed until resolved, using Camera/Tabs only for now
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -24,10 +28,10 @@ public class AntiBan {
     private final Random random = new Random();
     private long lastAntiBanTime = System.currentTimeMillis();
     
-    // Configurable intervals
-    private int minInterval = 15000; // 15s
-    private int maxInterval = 120000; // 2 mins
-    private int nextInterval = 30000; // Start with 30s
+    // Configurable intervals - Increased to lower frequency
+    private int minInterval = 45000; // 45s
+    private int maxInterval = 300000; // 5 mins
+    private int nextInterval = 60000; // Start with 60s
 
     public AntiBan() {
         updateNextInterval();
@@ -86,9 +90,11 @@ public class AntiBan {
             moveCamera();
         } else if (roll < 40) {
             checkStats();
-        } else {
-            // 60% chance to check tabs (increased)
+        } else if (roll < 70) {
             checkRandomTab();
+        } else {
+            // 30% chance to right click random entity
+            rightClickRandomEntity();
         }
     }
 
@@ -114,5 +120,29 @@ public class AntiBan {
         Logger.log("AntiBan: Checking tab " + t.name());
         Tabs.open(t);
         sleep(800, 200);
+    }
+    
+    private void rightClickRandomEntity() {
+        List<Entity> candidates = new ArrayList<>();
+        
+        // Add nearby entities
+        candidates.addAll(NPCs.all(n -> n != null && n.distance(Players.getLocal()) < 7));
+        candidates.addAll(GameObjects.all(o -> o != null && o.distance(Players.getLocal()) < 7 && o.getName() != null && !o.getName().equals("null")));
+        candidates.addAll(Players.all(p -> p != null && !p.equals(Players.getLocal()) && p.distance(Players.getLocal()) < 7));
+        
+        if (candidates.isEmpty()) {
+            Logger.log("AntiBan: No entities to right-click");
+            return;
+        }
+        
+        Entity target = candidates.get(random.nextInt(candidates.size()));
+        if (target != null) {
+            Logger.log("AntiBan: Right-clicking " + target.getName());
+            if (target.isOnScreen()) {
+                // Examine is a safe right-click action
+                target.interact("Examine");
+                sleep(600, 300);
+            }
+        }
     }
 }

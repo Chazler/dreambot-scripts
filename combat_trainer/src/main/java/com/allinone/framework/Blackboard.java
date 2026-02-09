@@ -6,6 +6,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import com.allinone.skills.combat.data.GearItem;
 import com.allinone.skills.combat.data.LocationDef;
 import com.allinone.skills.woodcutting.data.WoodcuttingSpot;
+import com.allinone.skills.mining.data.MiningSpot;
 import com.allinone.skills.fishing.data.FishingSpot;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public class Blackboard {
     
     // Woodcutting
     private WoodcuttingSpot currentWoodcuttingSpot;
+    
+    // Mining
+    private MiningSpot currentMiningSpot;
     
     // Firemaking
     private com.allinone.skills.firemaking.data.FiremakingLog currentFiremakingLog;
@@ -61,6 +65,9 @@ public class Blackboard {
     public void setCurrentWoodcuttingSpot(WoodcuttingSpot spot) {
         this.currentWoodcuttingSpot = spot;
     }
+
+    public MiningSpot getCurrentMiningSpot() { return currentMiningSpot; }
+    public void setCurrentMiningSpot(MiningSpot spot) { this.currentMiningSpot = spot; }
     
     public AntiBan getAntiBan() {
         return antiBan;

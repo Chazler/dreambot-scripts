@@ -6,6 +6,7 @@ import com.allinone.skills.combat.CombatSkill;
 import com.allinone.skills.woodcutting.WoodcuttingSkill;
 import com.allinone.skills.fishing.FishingSkill;
 import com.allinone.skills.firemaking.FiremakingSkill;
+import com.allinone.skills.mining.MiningSkill;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
@@ -19,7 +20,7 @@ import java.util.Random;
     name = "All In One Trainer", 
     description = "Modular All-In-One Trainer using Behavior Trees", 
     author = "Copilot", 
-    version = 2.2, 
+    version = 2.3, 
     category = Category.MISC, 
     image = ""
 )
@@ -51,6 +52,7 @@ public class AllInOneScript extends AbstractScript {
         availableSkills.add(new WoodcuttingSkill());
         availableSkills.add(new FishingSkill());
         availableSkills.add(new FiremakingSkill());
+        availableSkills.add(new MiningSkill());
         
         // 3. Initial Selection
         pickNextSkill(null);
@@ -122,9 +124,8 @@ public class AllInOneScript extends AbstractScript {
         // Check if time expired OR force stop requested
         if (elapsed > switchInterval || (blackboard != null && blackboard.shouldForceStopSkill())) {
             Logger.log(elapsed > switchInterval ? "Switch Timer Expired." : "Skill requested stop (e.g. out of resources).");
-            boolean forceStop = blackboard != null && blackboard.shouldForceStopSkill();
             if (blackboard != null) blackboard.setForceStopSkill(false); // Reset flag
-            pickNextSkill(forceStop ? currentSkill : null);
+            pickNextSkill(currentSkill);
         }
         
         // Update Blackboard Timer

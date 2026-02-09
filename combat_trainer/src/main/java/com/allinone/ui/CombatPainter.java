@@ -65,6 +65,14 @@ public class CombatPainter {
         
         g.drawString("Time: " + formatTime(System.currentTimeMillis() - startTime), col1X, curY);
         curY += rowH;
+        
+        long remaining = blackboard != null ? blackboard.getTimeRemaining() : 0;
+        String remStr = remaining > 0 ? formatTime(remaining) : "--:--:--";
+        // Only show if positive to avoid clutter if undefined
+        if (remaining > 0) {
+            g.drawString("Left: " + remStr, col1X, curY);
+            curY += rowH;
+        }
 
         String status = blackboard != null ? blackboard.getCurrentStatus() : "Initializing...";
         if (status.length() > 25) status = status.substring(0, 22) + "..."; // Truncate long status
@@ -140,23 +148,28 @@ public class CombatPainter {
     }
 
     private void drawSkillRow(Graphics g, Skill skill, int x, int y) {
-        int current = Skills.getExperience(skill);
-        int start = startXp.getOrDefault(skill, current);
-        int gain = current - start;
+        int currentXp = Skills.getExperience(skill);
+        int startXpVal = startXp.getOrDefault(skill, currentXp);
+        int xpGain = currentXp - startXpVal;
         
-        if (gain > 0) {
+        int currentLvl = Skills.getRealLevel(skill);
+        int startLvl = Skills.getLevelForExperience(startXpVal);
+        int lvlGain = currentLvl - startLvl;
+        
+        String name = skill.getName().substring(0, 3);
+        
+        if (xpGain > 0) {
             long runTime = System.currentTimeMillis() - startTime;
-            int hourly = (int) (gain * 3600000.0 / Math.max(runTime, 1));
+            int hourly = (int) (xpGain * 3600000.0 / Math.max(runTime, 1));
             
-            // Format: "Str: +1,200 (45k/hr)"
-            String name = skill.getName().substring(0, 3);
-            String text = String.format("%s: +%,d (%,d/h)", name, gain, hourly);
+            // Format: "Str: 55(+1) 45,000/h"
+            String text = String.format("%s: %d(+%d) %,d/h", name, currentLvl, lvlGain, hourly);
             
             g.setColor(Color.GREEN);
             g.drawString(text, x, y);
         } else {
              g.setColor(Color.DARK_GRAY);
-             g.drawString(skill.getName().substring(0, 3) + ": --", x, y);
+             g.drawString(String.format("%s: %d(+0)", name, currentLvl), x, y);
         }
     }
 

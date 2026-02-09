@@ -156,4 +156,21 @@ public class BankHelper {
 
         return false; // Should be unreachable if logic is sound
     }
+
+    public static boolean depositAll() {
+        if (!Bank.isOpen()) {
+            if (Bank.open()) {
+                Sleep.sleepUntil(Bank::isOpen, 5000);
+            } else {
+                return false;
+            }
+        }
+        
+        if (Bank.isOpen()) {
+             if (Inventory.isEmpty()) return true;
+             Bank.depositAllItems();
+             return Sleep.sleepUntil(Inventory::isEmpty, 3000);
+        }
+        return false;
+    }
 }
