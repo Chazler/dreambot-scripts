@@ -15,12 +15,14 @@ com\allinone\skills\fishing\data\FishingMethod.class
 com\allinone\skills\woodcutting\data\TreeType.class
 com\allinone\skills\woodcutting\nodes\FindTreeNode.class
 com\allinone\ui\painters\FishingPainter.class
+com\allinone\framework\loadout\CombatLoadout.class
 com\allinone\skills\firemaking\data\StaticBurnAreas.class
 com\allinone\skills\smithing\data\SmithingType.class
 com\allinone\framework\Sequence.class
 com\allinone\framework\ItemTarget.class
 com\allinone\skills\fishing\nodes\DropFishNode.class
 com\allinone\skills\combat\nodes\CheckHealthNode.class
+com\allinone\framework\loadout\Slot$1.class
 com\allinone\skills\smithing\nodes\SmithItemNode.class
 com\allinone\skills\firemaking\FiremakingSkill.class
 com\allinone\skills\smithing\nodes\SmeltNode.class
@@ -44,6 +46,7 @@ com\allinone\ui\painters\WoodcuttingPainter.class
 com\allinone\AllInOneScript.class
 com\allinone\skills\woodcutting\nodes\TravelToTreeAreaNode.class
 com\allinone\framework\Blackboard.class
+com\allinone\framework\loadout\Loadout.class
 com\allinone\skills\combat\nodes\TravelNode.class
 com\allinone\skills\combat\nodes\AcquireTargetNode.class
 com\allinone\framework\Selector.class
@@ -52,9 +55,11 @@ com\allinone\skills\mining\nodes\MineRockNode.class
 com\allinone\skills\combat\data\LocationDef.class
 com\allinone\skills\combat\strategies\GearScorer.class
 com\allinone\skills\smithing\strategies\SmithingManager.class
+com\allinone\framework\loadout\Slot.class
 com\allinone\framework\TravelHelper$TeleportLocation.class
 com\allinone\ui\painters\SmithingPainter.class
 com\allinone\skills\firemaking\data\FiremakingLog.class
+com\allinone\framework\loadout\LoadoutManager.class
 com\allinone\skills\woodcutting\WoodcuttingSkill.class
 com\allinone\skills\firemaking\nodes\BurnLogNode.class
 com\allinone\skills\fishing\data\FishingSpot.class
@@ -76,6 +81,7 @@ com\allinone\skills\combat\strategies\TargetScorer.class
 com\allinone\skills\firemaking\data\StaticBurnAreas$BurnArea.class
 com\allinone\skills\fishing\nodes\BankFishNode.class
 com\allinone\skills\smithing\nodes\TravelToSmithingLocationNode.class
+com\allinone\framework\loadout\ChickenLoadout.class
 com\allinone\skills\mining\nodes\TravelToMiningSpotNode.class
 com\allinone\framework\AntiBan.class
 com\allinone\skills\combat\CombatSkill.class

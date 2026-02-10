@@ -59,9 +59,9 @@ public class WoodcuttingSkill implements SkillSet {
          
          // Root Selector
          rootNode = new Selector(
+             withdrawAxe,    // Priority: Ensure we have an axe
              updateStrategy, // Always ensure we target correct spot
              collectNests,   // Priority: Bird nests
-             withdrawAxe,    // Priority: Ensure we have an axe
              bankLogs,       // Priority: Bank if full & supported
              dropLogs,       // Priority: Drop if full & not banking
              chopSequence    // Default: Travel -> Find -> Chop

@@ -14,7 +14,7 @@ public class StaticBurnAreas {
         // AREAS.add(new BurnArea("Grand Exchange", new Area(3155, 3480, 3175, 3500), BankLocation.GRAND_EXCHANGE));
 
         // Varrock West (South of Bank)
-        AREAS.add(new BurnArea("Varrock West", new Area(3205, 3428, 3209, 3430), BankLocation.VARROCK_WEST));
+        AREAS.add(new BurnArea("Varrock West", new Area(3183, 3428, 3186, 3432), BankLocation.VARROCK_WEST));
         
         // // Varrock East (South of Bank)
         // AREAS.add(new BurnArea("Varrock East", new Area(3250, 3418, 3258, 3430), BankLocation.VARROCK_EAST));

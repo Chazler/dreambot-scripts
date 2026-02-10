@@ -25,3 +25,4 @@ You are an expert Java developer specialized in writing DreamBot scripts. Your g
 5.  Make sure that there are no unused imports or variables in the code.
 6.  Run `mvn clean package`.
 7.  If there are compilation errors, fix them and repeat step 6 until the project compiles successfully.
+8.  When you finish implementing the feature or fixing the bug, provide a concise summary of the changes and suggest any further improvements or optimizations.

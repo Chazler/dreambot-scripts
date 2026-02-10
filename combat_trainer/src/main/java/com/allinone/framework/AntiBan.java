@@ -74,6 +74,7 @@ public class AntiBan {
             performTimedAntiBan(); // Check if we should do an anti-ban action while waiting
             Sleep.sleep(100); // Check condition every 100ms
         }
+        
         // additional sleep after condition is met to mimic human reaction time
         sleep(500, 200);
     }

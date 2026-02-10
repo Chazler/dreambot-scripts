@@ -122,7 +122,7 @@ public class StaticLocationData {
             "Big Frogs",
             new Area(3190, 9540, 3235, 9600),
             Arrays.asList("Big Frog"),
-            45,
+            20,
             false,
             8,
             28000,

@@ -1,5 +1,6 @@
 package com.allinone.skills.woodcutting.nodes;
 
+import com.allinone.framework.AntiBan;
 import com.allinone.framework.BankHelper;
 import com.allinone.framework.Blackboard;
 import com.allinone.framework.ItemTarget;
@@ -8,13 +9,17 @@ import com.allinone.framework.Status;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import org.dreambot.api.methods.interactive.Players;
+import com.allinone.framework.TravelHelper;
 import java.util.Collections;
 
 public class WithdrawAxeNode extends LeafNode {
 
     private final Blackboard blackboard;
+    private final AntiBan antiBan = new AntiBan();
 
     public WithdrawAxeNode(Blackboard blackboard) {
         this.blackboard = blackboard;
@@ -25,6 +30,21 @@ public class WithdrawAxeNode extends LeafNode {
         // 1. Find best axe we CAN use
         String bestAxe = getBestAxe();
         if (bestAxe == null) {
+            // If bank is not open, we might just not see it yet.
+            if (!Bank.isOpen()) {
+                 Logger.log("No axe found in inv/equip. Opening bank to check...");
+                 if (Bank.open()) {
+                    antiBan.sleepUntil(Bank::isOpen, 5000);
+                 } else {
+                    Logger.log("Bank open failed. Traveling to bank.");
+                    BankLocation nearest = BankLocation.getNearest(Players.getLocal());
+                    if (nearest != null) {
+                        TravelHelper.travelTo(nearest.getArea(10));
+                    }
+                 }
+                 return Status.RUNNING;
+            }
+
             Logger.log("No usable axe found (checked bank + inventory)!");
             // Critical failure? 
             if (Bank.isOpen()) Bank.close();

@@ -12,6 +12,9 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.widget.Widgets;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.dreambot.api.input.Keyboard;
 
 public class BurnLogNode extends LeafNode {
 
@@ -31,64 +34,86 @@ public class BurnLogNode extends LeafNode {
         Item log = Inventory.get(i -> i != null && i.getName() != null && i.getName().toLowerCase().contains("logs"));
         
         if (log == null) {
-             // Maybe we have "Logs" exactly or some other variation not caught?
-             // Should not happen with toLowerCase().contains("logs")
              return Status.FAILURE;
         }
-        
-        // Ensure we are not standing on a fire or valid object that blocks fire
-        Tile myTile = Players.getLocal().getTile();
-        // Check for Fire or specified interruptive objects
-        GameObject sameTileObj = GameObjects.closest(g -> g.getTile().equals(myTile) && (g.getName().equals("Fire") || g.getName().equals("Daisy") || g.getName().contains("Femur"))); 
-        
-        if (sameTileObj != null) {
-            log("Current tile blocked by: " + sameTileObj.getName() + ". Moving away.");
-            
-            // Try to find a free tile in 4 directions
-            Tile[] candidates = {
-                myTile.translate(-1, 0), // West
-                myTile.translate(1, 0),  // East
-                myTile.translate(0, -1), // South
-                myTile.translate(0, 1)   // North
-            };
-            
-            for (Tile target : candidates) {
-                if (Walking.canWalk(target) && !isTileBlocked(target)) {
-                     Walking.walkExact(target);
-                     Sleep.sleepUntil(() -> !Players.getLocal().isMoving() && !Players.getLocal().getTile().equals(myTile), 3000);
-                     return Status.RUNNING;
-                }
-            }
-            
-            // If all blocked, just try West anyway (default fallback)
-            Walking.walkExact(myTile.translate(-1, 0));
+
+        // Check if we are already adding to a fire
+        if (Players.getLocal().isAnimating()) {
+            blackboard.setCurrentStatus("Burning logs (Bonfire)");
             return Status.RUNNING;
         }
 
-        // Check if destination (West) is blocked by Collision or Objects
-        Tile westTile = myTile.translate(-1, 0);
-        // We typically move West. If we can't walk there, we shouldn't burn here.
-        // isTileBlocked checks for Fire/Daisy/Femur, but we also want to check Walls/Decorations which Walking.canWalk checks (?)
-        // Walking.canWalk checks if we can move FROM current TO target.
-        if (!Walking.canWalk(westTile) || isTileBlocked(westTile)) {
-             log("Cannot move West due to obstacle or fire/blocked tile. Relocating.");
-             blackboard.setForceFiremakingRelocate(true);
-             return Status.FAILURE;
+        // 1. Look for existing fire (Bonfire Mode)
+        GameObject nearbyFire = GameObjects.closest(g -> g != null && g.getName().equals("Fire") && g.distance(Players.getLocal()) < 6);
+        
+        if (nearbyFire != null) {
+            log("Adding logs to existing fire: " + nearbyFire.getTile());
+            blackboard.setCurrentStatus("Using logs on bonfire");
+            if (log.useOn(nearbyFire)) {
+                 // Wait for interface OR animation
+                 // 270 is standard production interface
+                 Sleep.sleepUntil(() -> Players.getLocal().isAnimating() || (Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible()), 3000);
+                 
+                 // Handle specific "How many logs?" interface if it appears
+                 if (handleMakeAll()) {
+                     Sleep.sleepUntil(() -> Players.getLocal().isAnimating(), 3000);
+                 }
+
+                 AntiBan.sleepStatic(600, 200);
+                 return Status.RUNNING;
+            }
+        }
+        
+        // 2. If no fire nearby, we must light one
+        log("No fire nearby. Lighting new fire.");
+        blackboard.setCurrentStatus("Lighting first fire");
+        
+        // Ensure tile clear check just for the initial fire
+        Tile myTile = Players.getLocal().getTile();
+        if (isTileBlocked(myTile)) {
+            // Find nearby clear tile
+             log("Blocked tile. Finding clear spot.");
+             Tile[] nearby = {
+                 myTile.translate(1, 0), myTile.translate(-1, 0),
+                 myTile.translate(0, 1), myTile.translate(0, -1)
+             };
+             for (Tile t : nearby) {
+                 if (Walking.canWalk(t) && !isTileBlocked(t)) {
+                     Walking.walkExact(t);
+                     Sleep.sleepUntil(() -> !Players.getLocal().isMoving(), 2500);
+                     return Status.RUNNING;
+                 }
+             }
         }
 
         if (log.useOn("Tinderbox")) {
-             // Wait for animation to start
+             // Wait for init
              Sleep.sleepUntil(() -> Players.getLocal().isAnimating(), 3000);
-             
-             // Wait for animation to finish
-             Sleep.sleepUntil(() -> !Players.getLocal().isAnimating(), 10000);
-             
-             // Human-like sleep
-             AntiBan.sleepStatic(500, 250); 
+             Sleep.sleepUntil(() -> !Players.getLocal().isAnimating(), 8000); 
+             // Once lit, next loop will catch "nearbyFire" and start adding logs
              return Status.RUNNING;
         }
 
         return Status.FAILURE;
+    }
+
+    private boolean handleMakeAll() {
+        // Standard Make-All Interface (ID 270)
+        if (Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible()) {
+            log("Make-All Interface detected. Pressing Space.");
+            Keyboard.type(" ");
+            return true;
+        }
+        
+        // Chatbox "How many logs?" Interface (Usually matches text)
+        // Check for general "Burn" action in chatbox widget area or similar
+        // Often simpler just to press Space if the dialog is open and focused
+        if (Widgets.getWidget(162) != null && Widgets.getWidget(162).isVisible()) { // 162 is often chatbox layer
+             // This is a bit speculative without ID, but Space is safe for most default options
+             // Keyboard.type(" "); 
+        }
+        
+        return false;
     }
 
     private boolean isTileBlocked(Tile t) {

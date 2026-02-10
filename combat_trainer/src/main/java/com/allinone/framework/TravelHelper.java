@@ -128,7 +128,7 @@ public class TravelHelper {
         if (Walking.walk(target)) {
             AntiBan.sleepStatic(900, 150);
         } else {
-             Logger.log("TravelHelper: WebWalk failed");
+            Logger.log("TravelHelper: WebWalk failed");
         }
     }
 }

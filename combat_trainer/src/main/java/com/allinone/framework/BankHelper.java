@@ -5,6 +5,8 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import org.dreambot.api.methods.interactive.Players;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class BankHelper {
 
             if (wearingJunk) {
                 if (!Bank.isOpen()) {
-                    Bank.open();
+                    openBankOrTravel();
                     return false;
                 }
                 Logger.log("Dumping unnecessary equipment...");
@@ -117,12 +119,9 @@ public class BankHelper {
             return false;
         }
 
-        // 4. Handle Missing Items (Banking)
         if (missingItems) {
             if (!Bank.isOpen()) {
-                if (Bank.open()) {
-                    Sleep.sleepUntil(Bank::isOpen, 5000);
-                }
+                openBankOrTravel();
                 return false;
             }
             
@@ -153,44 +152,28 @@ public class BankHelper {
                    if (target.shouldFill()) {
                        Bank.withdrawAll(target.getName());
                    } else {
-                       if (target.getAmount() > 1) {
-                           Bank.withdraw(target.getName(), target.getAmount());
-                       } else {
+                        // Calculate how many we actually need (target - current)
+                        int current = Inventory.count(target.getName());
+                        int needed = target.getAmount() - current;
+                        
+                        if (needed <= 0) continue;
+
+                        if (needed > 1) {
+                           Bank.withdraw(target.getName(), needed);
+                        } else {
                            Bank.withdraw(target.getName());
-                       }
+                        }
                    }
-                   Sleep.sleepUntil(() -> Inventory.contains(target.getName()), 3000);
+                   Sleep.sleepUntil(() -> Inventory.count(target.getName()) >= target.getAmount(), 3000);
                 } else {
                     // Item missing from bank
-                    // If target was FILL, and we have 0, we failed.
-                    // If target was specific, and we have 0, we failed.
                     Logger.log("Bank missing required item: " + target.getName());
                 }
             }
-            
-            // If we grabbed equipment, logic will loop:
-            // Next tick: missingItems = false, needEquip = true.
-            // Then checks block 3 (Handle Equipping) -> Closes Bank -> Equips.
             return false;
         }
 
-        // 5. Final fallback for equipping (if missingItems blocked the first check)
-        if (needEquip) {
-             if (Bank.isOpen()) {
-                Bank.close();
-                Sleep.sleepUntil(() -> !Bank.isOpen(), 3000);
-                return false;
-            }
-            
-            for (ItemTarget target : targets) {
-                if (target.shouldEquip() && !Equipment.contains(target.getName()) && Inventory.contains(target.getName())) {
-                     // ... equipping logic duplicated or shared ... 
-                     // Let's rely on the next tick hitting Block 3.
-                }
-            }
-        }
-
-        return false; // Should be unreachable if logic is sound
+        return true; // Use true if we fell through with no missing items (e.g. earlier logic passed)
     }
 
     public static boolean depositAll() {
@@ -208,5 +191,33 @@ public class BankHelper {
              return Sleep.sleepUntil(Inventory::isEmpty, 3000);
         }
         return false;
+    }
+
+    private static void openBankOrTravel() {
+        BankLocation nearest = BankLocation.getNearest(Players.getLocal());
+        
+        if (nearest == null) {
+             Logger.log("Critical Error: No bank location found.");
+             org.dreambot.api.script.ScriptManager.getScriptManager().stop();
+             return;
+        }
+
+        // Safety Check: Ensure we are actually near a bank (as expected by script logic)
+        // We use getArea(1) to approximate the center point
+        if (nearest.getArea(1).getCenter().distance(Players.getLocal()) > 20) {
+             Logger.log("Critical Error: Nearest bank is too far (>20 tiles). We should have traveled there via Nodes.");
+             org.dreambot.api.script.ScriptManager.getScriptManager().stop();
+             return;
+        }
+
+        if (nearest.getArea(10).contains(Players.getLocal())) {
+            if (Bank.open()) {
+                Sleep.sleepUntil(Bank::isOpen, 5000);
+            }
+        } else {
+             // Close enough to interact/walk short distance
+             Logger.log("Appraching bank...");
+             TravelHelper.travelTo(nearest.getArea(10));
+        }
     }
 }

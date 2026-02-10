@@ -17,6 +17,7 @@ C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\p
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\smithing\data\SmithingItem.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\AttackNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\smithing\data\SmithingType.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\loadout\CombatLoadout.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\data\FishingSpot.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\LeafNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\AcquireTargetNode.java
@@ -37,6 +38,7 @@ C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skil
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\firemaking\data\StaticBurnAreas.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\strategies\LocationScorer.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\WithdrawFishingGearNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\loadout\Loadout.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\CombatPainter.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\smithing\nodes\BankSmithingNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\WithdrawAxeNode.java
@@ -47,6 +49,7 @@ C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skil
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\strategies\TargetScorer.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\painters\SkillPainter.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\mining\nodes\FindRockNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\loadout\Slot.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\data\StaticLocationData.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\smithing\strategies\SmithingManager.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\mining\nodes\BankOreNode.java
@@ -70,6 +73,7 @@ C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skil
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\UpdateWoodcuttingStrategyNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\CollectNestNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\nodes\BankFishNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\loadout\ChickenLoadout.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\Node.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\CheckHealthNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\DropLogNode.java
@@ -80,5 +84,6 @@ C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\ui\p
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\BankHelper.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\firemaking\nodes\WithdrawLogsNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\smithing\nodes\TravelToSmithingLocationNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\loadout\LoadoutManager.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\ManageAttackStyleNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\woodcutting\nodes\FindTreeNode.java
