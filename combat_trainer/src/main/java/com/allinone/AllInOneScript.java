@@ -7,6 +7,14 @@ import com.allinone.skills.woodcutting.WoodcuttingSkill;
 import com.allinone.skills.fishing.FishingSkill;
 import com.allinone.skills.firemaking.FiremakingSkill;
 import com.allinone.skills.mining.MiningSkill;
+import com.allinone.framework.nodes.custom.EdgevilleTrapdoorNode;
+import com.allinone.framework.nodes.custom.EdgevilleLadderNode;
+import com.allinone.framework.nodes.custom.LumbridgeSwampEntranceNode;
+import com.allinone.framework.nodes.custom.LumbridgeSwampExitNode;
+import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
+import org.dreambot.api.methods.walking.web.node.AbstractWebNode;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
@@ -15,6 +23,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import com.allinone.ui.SkillSelectorOverlay;
+import org.dreambot.api.Client;
 
 @ScriptManifest(
     name = "All In One Trainer", 
@@ -29,6 +40,7 @@ public class AllInOneScript extends AbstractScript {
     private Blackboard blackboard;
     private SkillSet currentSkill;
     private List<SkillSet> availableSkills;
+    private SkillSelectorOverlay overlay;
     
     // Timer Logic
     private long lastSwitchTime;
@@ -57,6 +69,13 @@ public class AllInOneScript extends AbstractScript {
         
         // 3. Initial Selection
         pickNextSkill(null);
+
+        // 4. Register Custom Web Nodes (Hill Giants & Big Frogs)
+        registerCustomNodes();
+        
+        // 5. Initialize Overlay
+        overlay = new SkillSelectorOverlay(this);
+        Client.getCanvas().addMouseListener(overlay);
         
         Logger.log("Initialization Complete.");
     }
@@ -107,6 +126,7 @@ public class AllInOneScript extends AbstractScript {
         // Do nothing if same skill selected? 
         // Or re-initialize? Let's re-initialize to be safe/consistent
         currentSkill = selected;
+        blackboard.reset();
         currentSkill.onStart(blackboard);
         
         // Reset Timer
@@ -151,6 +171,60 @@ public class AllInOneScript extends AbstractScript {
         if (currentSkill != null) {
             currentSkill.onPaint(g);
         }
+        if (overlay != null) {
+            overlay.onPaint(g);
+        }
         // Generic timer is now handled by SkillPainter
+    }
+
+    @Override
+    public void onExit() {
+        if (overlay != null) {
+            Client.getCanvas().removeMouseListener(overlay);
+        }
+        WebFinder.getWebFinder().clearCustomNodes();
+        Logger.log("Cleared custom web nodes.");
+    }
+    
+    // UI Helpers
+    public List<SkillSet> getAvailableSkills() {
+        return availableSkills;
+    }
+    
+    public SkillSet getCurrentSkill() {
+        return currentSkill;
+    }
+    
+    public void addTime(long millis) {
+        this.switchInterval += millis;
+        Logger.log("Time added: " + (millis / 60000) + " minutes.");
+    }
+    
+    public void setCurrentSkill(SkillSet skill) {
+        if (skill != null && skill != currentSkill) {
+            Logger.log("Manually switching to: " + skill.getName());
+            
+            // Re-initialize specific skill
+            currentSkill = skill;
+            blackboard.reset();
+            currentSkill.onStart(blackboard);
+            
+            // Reset Timer logic for manual switch? 
+            // Or keep existing timer? 
+            // Usually switch means "Start fresh"
+            int seconds = MIN_SWITCH_TIME_SEC + random.nextInt(MAX_SWITCH_TIME_SEC - MIN_SWITCH_TIME_SEC);
+            switchInterval = seconds * 1000L;
+            lastSwitchTime = System.currentTimeMillis();
+        }
+    }
+
+    private void registerCustomNodes() {
+        // Hill Giants
+        new EdgevilleTrapdoorNode().register();
+        new EdgevilleLadderNode().register();
+        
+        // Big Frogs
+        new LumbridgeSwampEntranceNode().register();
+        new LumbridgeSwampExitNode().register();
     }
 }

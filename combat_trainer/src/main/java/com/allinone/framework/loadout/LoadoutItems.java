@@ -9,7 +9,7 @@ public class LoadoutItems {
         public static final LoadoutItem WILLOW_SHORTBOW = new LoadoutItem("Willow shortbow").req(Skill.RANGED, 20);
         public static final LoadoutItem OAK_SHORTBOW = new LoadoutItem("Oak shortbow").req(Skill.RANGED, 5);
         public static final LoadoutItem SHORTBOW = new LoadoutItem("Shortbow");
-        
+
         public static final LoadoutItem ADAMANT_ARROW = new LoadoutItem("Adamant arrow");
         public static final LoadoutItem MITHRIL_ARROW = new LoadoutItem("Mithril arrow");
         public static final LoadoutItem IRON_ARROW = new LoadoutItem("Iron arrow");
@@ -35,13 +35,12 @@ public class LoadoutItems {
         public static final LoadoutItem IRON_PICKAXE = new LoadoutItem("Iron pickaxe").req(Skill.MINING, 1).req(Skill.ATTACK, 1);
         public static final LoadoutItem BRONZE_PICKAXE = new LoadoutItem("Bronze pickaxe").req(Skill.MINING, 1).req(Skill.ATTACK, 1);
     }
-    
+
     public static class Fishing {
         public static final LoadoutItem SMALL_FISHING_NET = new LoadoutItem("Small fishing net");
-        public static final LoadoutItem CAGE = new LoadoutItem("Lobster pot");
+        public static final LoadoutItem LOBSTER_POT = new LoadoutItem("Lobster pot");
         public static final LoadoutItem HARPOON = new LoadoutItem("Harpoon");
         public static final LoadoutItem BIG_FISHING_NET = new LoadoutItem("Big fishing net");
-        public static final LoadoutItem LOBSTER_POT = new LoadoutItem("Lobster pot");
         public static final LoadoutItem FLY_FISHING_ROD = new LoadoutItem("Fly fishing rod");
         public static final LoadoutItem FISHING_ROD = new LoadoutItem("Fishing rod");
         public static final LoadoutItem FEATHERS = new LoadoutItem("Feather");
@@ -50,18 +49,5 @@ public class LoadoutItems {
 
     public static class Firemaking {
         public static final LoadoutItem TINDERBOX = new LoadoutItem("Tinderbox");
-    }
-    
-    public static class Melee {
-        // Examples for future use
-        public static final LoadoutItem IRON_SCIMITAR = new LoadoutItem("Iron scimitar");
-        public static final LoadoutItem IRON_KITESHIELD = new LoadoutItem("Iron kiteshield");
-        public static final LoadoutItem IRON_FULL_HELM = new LoadoutItem("Iron full helm");
-        public static final LoadoutItem IRON_PLATEBODY = new LoadoutItem("Iron platebody");
-        public static final LoadoutItem IRON_PLATELEGS = new LoadoutItem("Iron platelegs");
-        public static final LoadoutItem IRON_BOOTS = new LoadoutItem("Iron boots");
-        public static final LoadoutItem LEATHER_GLOVES = new LoadoutItem("Leather gloves");
-        public static final LoadoutItem AMULET_OF_POWER = new LoadoutItem("Amulet of power");
-        public static final LoadoutItem TEAM_1_CAPE = new LoadoutItem("Team-1 cape");
     }
 }

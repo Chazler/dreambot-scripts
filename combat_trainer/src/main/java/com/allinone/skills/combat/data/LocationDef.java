@@ -12,9 +12,10 @@ public class LocationDef {
     private final int safetyRating; // 1-10, 10 being safest
     private final int expectedXpPerHour; 
     private final int maxDefenceNeeded;
+    private final boolean membersOnly;
 
     public LocationDef(String name, Area area, List<String> npcNames, int recommendedCombatLevel, 
-                       boolean isAggressive, int safetyRating, int expectedXpPerHour, int maxDefenceNeeded) {
+                       boolean isAggressive, int safetyRating, int expectedXpPerHour, int maxDefenceNeeded, boolean membersOnly) {
         this.name = name;
         this.area = area;
         this.npcNames = npcNames;
@@ -23,6 +24,7 @@ public class LocationDef {
         this.safetyRating = safetyRating;
         this.expectedXpPerHour = expectedXpPerHour;
         this.maxDefenceNeeded = maxDefenceNeeded;
+        this.membersOnly = membersOnly;
     }
 
     public String getName() { return name; }
@@ -33,4 +35,5 @@ public class LocationDef {
     public int getSafetyRating() { return safetyRating; }
     public int getExpectedXpPerHour() { return expectedXpPerHour; }
     public int getMaxDefenceNeeded() { return maxDefenceNeeded; }
+    public boolean isMembersOnly() { return membersOnly; }
 }

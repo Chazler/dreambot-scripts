@@ -29,7 +29,7 @@ public class TravelToFishNode extends LeafNode {
             return Status.SUCCESS;
         }
         
-        blackboard.setCurrentStatus("Traveling to Fishing Spot");
+        blackboard.setCurrentStatus("Traveling to " + spot.getNpcName());
         TravelHelper.travelTo(spot.getArea());
         
         return Status.RUNNING;

@@ -25,6 +25,12 @@ public class BankSmithingNode extends LeafNode {
     public Status execute() {
         SmithingItem item = SmithingManager.getBestItem();
         
+        if (item == null) {
+            log("No valid Smithing items found (all blacklisted?). Stopping skill.");
+            blackboard.setForceStopSkill(true);
+            return Status.FAILURE; 
+        }
+        
         boolean hasTools = true;
         boolean hasIngredients = true;
         
@@ -79,19 +85,27 @@ public class BankSmithingNode extends LeafNode {
         
         // Withdrawing
         if (item.getType() == SmithingType.FORGING) {
-            if (!Bank.contains("Hammer") && !Inventory.contains("Hammer")) {
-                log("No Hammer found!");
-                return Status.FAILURE;
+            boolean hasHammer = Inventory.contains("Hammer") || Bank.contains("Hammer");
+            
+            if (!hasHammer) {
+                log("No Hammer found! Switching to Smelting.");
+                SmithingManager.blacklistType(SmithingType.FORGING);
+                // Return RUNNING to re-evaluate next tick with new item
+                return Status.RUNNING;
             }
-            Bank.withdraw("Hammer", 1);
-            Sleep.sleepUntil(() -> Inventory.contains("Hammer"), 2000);
+            
+            if (!Inventory.contains("Hammer")) {
+                 Bank.withdraw("Hammer", 1);
+                 Sleep.sleepUntil(() -> Inventory.contains("Hammer"), 2000);
+            }
             
             if (Bank.contains(item.getPrimaryItem())) {
                  Bank.withdrawAll(item.getPrimaryItem());
                  Sleep.sleepUntil(() -> Inventory.isFull(), 2000);
             } else {
-                 log("Out of bars: " + item.getPrimaryItem());
-                 return Status.FAILURE;
+                 log("Out of bars: " + item.getPrimaryItem() + ". Blacklisting item.");
+                 SmithingManager.blacklist(item);
+                 return Status.RUNNING;
             }
         
         } else {
@@ -115,19 +129,25 @@ public class BankSmithingNode extends LeafNode {
             int primToWithdraw = sets * item.getPrimaryCount();
             int secToWithdraw = sets * item.getSecondaryCount();
             
-            if (!Bank.contains(item.getPrimaryItem())) {
-                log("Out of ore: " + item.getPrimaryItem());
-                return Status.FAILURE;
+            if (!Bank.contains(item.getPrimaryItem()) || Bank.count(item.getPrimaryItem()) < item.getPrimaryCount()) {
+                log("Out of ore (Primary): " + item.getPrimaryItem() + ". Blacklisting item.");
+                SmithingManager.blacklist(item);
+                return Status.RUNNING;
             }
             
+            if (item.needsSecondary()) {
+                 if (!Bank.contains(item.getSecondaryItem()) || Bank.count(item.getSecondaryItem()) < item.getSecondaryCount()) {
+                     log("Out of ore (Secondary): " + item.getSecondaryItem() + ". Blacklisting item.");
+                     SmithingManager.blacklist(item);
+                     return Status.RUNNING;
+                 }
+            }
+
+            // Perform Withdraws only after checking ALL requirements (atomic check)
             Bank.withdraw(item.getPrimaryItem(), primToWithdraw);
             Sleep.sleep(600);
             
             if (item.needsSecondary()) {
-                 if (!Bank.contains(item.getSecondaryItem())) {
-                     log("Out of ore: " + item.getSecondaryItem());
-                     return Status.FAILURE;
-                 }
                  Bank.withdraw(item.getSecondaryItem(), secToWithdraw);
                  Sleep.sleep(600);
             }

@@ -3,11 +3,9 @@ package com.allinone.skills.mining.nodes;
 import com.allinone.framework.Blackboard;
 import com.allinone.framework.LeafNode;
 import com.allinone.framework.Status;
+import com.allinone.framework.TravelHelper;
 import com.allinone.skills.mining.data.MiningSpot;
-import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.walking.impl.Walking;
-import org.dreambot.api.utilities.Sleep;
 
 public class TravelToMiningSpotNode extends LeafNode {
 
@@ -27,11 +25,8 @@ public class TravelToMiningSpotNode extends LeafNode {
         }
 
         blackboard.setCurrentStatus("Traveling to " + spot.getName());
-        
-        if (Walking.shouldWalk(6)) {
-             Walking.walk(spot.getArea().getCenter());
-        }
-        
+        TravelHelper.travelTo(spot.getArea());
+
         return Status.RUNNING;
     }
 }

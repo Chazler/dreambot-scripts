@@ -2,6 +2,7 @@ package com.allinone.skills.combat.strategies;
 
 import com.allinone.skills.combat.data.LocationDef;
 import com.allinone.skills.combat.data.StaticLocationData;
+import org.dreambot.api.Client;
 import org.dreambot.api.methods.interactive.Players;
 import java.util.Comparator;
 
@@ -10,11 +11,13 @@ public class LocationScorer {
     public static LocationDef getBestLocation() {
         if (Players.getLocal() == null) return StaticLocationData.ALL_LOCATIONS.get(0);
         int combatLevel = Players.getLocal().getLevel();
+        boolean isMembers = Client.isMembers();
         
         // Find locations where combat level is at least the recommended, but not TOO high (diminishing XP)
         // This is a heuristic function.
         
         return StaticLocationData.ALL_LOCATIONS.stream()
+                .filter(loc -> !loc.isMembersOnly() || isMembers) // Filter based on membership
                 .map(loc -> new ScoredLocation(loc, score(loc, combatLevel)))
                 .max(Comparator.comparingDouble(ScoredLocation::getScore))
                 .map(ScoredLocation::getLocation)

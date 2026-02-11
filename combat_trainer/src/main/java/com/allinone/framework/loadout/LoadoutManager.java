@@ -60,7 +60,20 @@ public class LoadoutManager {
         
         // Add specific inventory items
         targets.addAll(loadout.getInventoryItems());
-        
+
+        // Add inventory candidates (first available wins)
+        List<String> candidates = loadout.getInventoryCandidates();
+        if (!candidates.isEmpty()) {
+            for (String candidateName : candidates) {
+                if (Inventory.contains(candidateName) || Bank.contains(candidateName)) {
+                    int amount = loadout.getInventoryCandidateAmount();
+                    boolean fill = loadout.isInventoryCandidateFill();
+                    targets.add(new ItemTarget(candidateName, amount, false, fill));
+                    break;
+                }
+            }
+        }
+
         return targets;
     }
 
@@ -117,7 +130,20 @@ public class LoadoutManager {
                 return false;
             }
         }
-        
+
+        // Check inventory candidates (need at least one of them)
+        List<String> candidates = loadout.getInventoryCandidates();
+        if (!candidates.isEmpty()) {
+            boolean hasAny = false;
+            for (String name : candidates) {
+                if (Inventory.contains(name)) {
+                    hasAny = true;
+                    break;
+                }
+            }
+            if (!hasAny) return false;
+        }
+
         return true;
     }
 }

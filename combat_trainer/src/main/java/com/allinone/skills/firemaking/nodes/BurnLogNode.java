@@ -13,7 +13,6 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widgets;
-import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.dreambot.api.input.Keyboard;
 
 public class BurnLogNode extends LeafNode {
@@ -37,13 +36,34 @@ public class BurnLogNode extends LeafNode {
              return Status.FAILURE;
         }
 
+        // Check if we strictly finished burning (Chat message "The fire has burned out")
+        // No easy API for chat listener here unless we implement MessageListener in main script
+        // But we can check animation. If we are NOT animating, we are idle.
+        
         // Check if we are already adding to a fire
         if (Players.getLocal().isAnimating()) {
             blackboard.setCurrentStatus("Burning logs (Bonfire)");
             return Status.RUNNING;
         }
+        
+        // --- NEW LOGIC ---
+        // 1. Look for "Forester's Campfire"
+        GameObject forestersCampfire = GameObjects.closest(g -> g != null && g.getName().equals("Forester's campfire") && g.distance(Players.getLocal()) < 8);
+        
+        if (forestersCampfire != null) {
+             log("Found Forester's Campfire. Tending to it.");
+             blackboard.setCurrentStatus("Tending Forester's Campfire");
+             
+             if (forestersCampfire.interact("Tend-to") || log.useOn(forestersCampfire)) {
+                 Sleep.sleepUntil(() -> Players.getLocal().isAnimating() || Players.getLocal().isMoving(), 3000);
+                 if (handleMakeAll()) {
+                     Sleep.sleepUntil(() -> Players.getLocal().isAnimating(), 3000);
+                 }
+                 return Status.RUNNING;
+             }
+        }
 
-        // 1. Look for existing fire (Bonfire Mode)
+        // 2. Look for existing normal fire (Bonfire Mode fallback)
         GameObject nearbyFire = GameObjects.closest(g -> g != null && g.getName().equals("Fire") && g.distance(Players.getLocal()) < 6);
         
         if (nearbyFire != null) {
@@ -64,7 +84,7 @@ public class BurnLogNode extends LeafNode {
             }
         }
         
-        // 2. If no fire nearby, we must light one
+        // 3. If no fire nearby, we must light one
         log("No fire nearby. Lighting new fire.");
         blackboard.setCurrentStatus("Lighting first fire");
         
@@ -89,8 +109,8 @@ public class BurnLogNode extends LeafNode {
         if (log.useOn("Tinderbox")) {
              // Wait for init
              Sleep.sleepUntil(() -> Players.getLocal().isAnimating(), 3000);
-             Sleep.sleepUntil(() -> !Players.getLocal().isAnimating(), 8000); 
-             // Once lit, next loop will catch "nearbyFire" and start adding logs
+             Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() || GameObjects.closest("Forester's campfire") != null, 8000); 
+             // Once lit, next loop will catch "nearbyFire" or "Forester's campfire" and start adding logs
              return Status.RUNNING;
         }
 

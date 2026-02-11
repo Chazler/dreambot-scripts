@@ -44,4 +44,22 @@ public enum Slot {
             default: return null;
         }
     }
+
+    public static Slot fromEquipmentSlot(EquipmentSlot es) {
+        if (es == null) return null;
+        switch (es) {
+            case HAT: return HEAD;
+            case CAPE: return CAPE;
+            case AMULET: return NECK;
+            case ARROWS: return AMMO;
+            case WEAPON: return WEAPON;
+            case CHEST: return BODY;
+            case SHIELD: return SHIELD;
+            case LEGS: return LEGS;
+            case HANDS: return HANDS;
+            case FEET: return FEET;
+            case RING: return RING;
+            default: return null;
+        }
+    }
 }

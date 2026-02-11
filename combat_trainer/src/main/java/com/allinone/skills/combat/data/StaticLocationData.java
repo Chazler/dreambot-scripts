@@ -18,7 +18,8 @@ public class StaticLocationData {
             false,  // Aggr
             10,     // Safety
             2000,   // XP/hr
-            3       // Max Def Needed
+            3,      // Max Def Needed
+            false   // Members
         ));
 
         // Lumbridge Cows
@@ -30,7 +31,8 @@ public class StaticLocationData {
             false,
             9,
             5000,
-            10      // Max Def Needed (User requested cap after 5, let's say 10 for safety)
+            10,      // Max Def Needed (User requested cap after 5, let's say 10 for safety)
+            false
         ));
 
         // Lumbridge Goblins
@@ -42,7 +44,8 @@ public class StaticLocationData {
             false,
             8,
             5000,
-            10
+            10,
+            false
         ));
 
         // Port Sarim Seagulls (North Dock)
@@ -54,7 +57,8 @@ public class StaticLocationData {
             false,
             10,
             5000,
-            1
+            1,
+            false
         ));
 
         // Lumbridge Swamp Rats
@@ -65,8 +69,9 @@ public class StaticLocationData {
             5,
             false,
             8,
-            3500,
-            10
+            5000,
+            10,
+            false
         ));
         
         // Barbarian Village (Long Hall)
@@ -78,7 +83,8 @@ public class StaticLocationData {
             false,
             7,
             10000,
-            20
+            20,
+            false
         ));
         
         // Al-Kharid Warriors
@@ -90,7 +96,8 @@ public class StaticLocationData {
             true, // Aggressive
             6,
             15000,
-            30
+            30,
+            false
         ));
         
         // Varrock Guards
@@ -102,7 +109,8 @@ public class StaticLocationData {
             false,
             6,
             12000,
-            40
+            40,
+            false
         ));
         
         // Hill Giants (Edgeville Dungeon)
@@ -114,7 +122,8 @@ public class StaticLocationData {
             true,
             5,
             25000,
-            50
+            50,
+            false
         ));
         
         // Big Frogs (Lumbridge Swamp Caves)
@@ -126,7 +135,8 @@ public class StaticLocationData {
             false,
             8,
             28000,
-            70
+            70,
+            true
         ));
     }
 }

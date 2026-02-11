@@ -11,6 +11,12 @@ public abstract class Loadout {
     private final Map<Slot, String> overrides = new HashMap<>();
     private final List<ItemTarget> inventoryItems = new ArrayList<>();
 
+    // Ordered candidates for an inventory item (e.g. food: best to worst)
+    // The first available one in bank will be used.
+    private List<String> inventoryCandidates = new ArrayList<>();
+    private int inventoryCandidateAmount = 0;
+    private boolean inventoryCandidateFill = false;
+
     /**
      * Define a list of candidate items for a slot, ordered from BEST to WORST.
      * The manager will pick the first one you own and can use.
@@ -77,5 +83,30 @@ public abstract class Loadout {
         Set<Slot> defined = new HashSet<>(slots.keySet());
         defined.addAll(overrides.keySet());
         return defined;
+    }
+
+    /**
+     * Set ordered candidates for an inventory item (e.g. food).
+     * LoadoutManager will pick the first available one from bank/inventory.
+     * @param amount How many to withdraw
+     * @param fill   If true, fill remaining inventory space
+     * @param candidates Item names ordered best to worst
+     */
+    public void setInventoryCandidates(int amount, boolean fill, String... candidates) {
+        this.inventoryCandidates = Arrays.asList(candidates);
+        this.inventoryCandidateAmount = amount;
+        this.inventoryCandidateFill = fill;
+    }
+
+    public List<String> getInventoryCandidates() {
+        return inventoryCandidates;
+    }
+
+    public int getInventoryCandidateAmount() {
+        return inventoryCandidateAmount;
+    }
+
+    public boolean isInventoryCandidateFill() {
+        return inventoryCandidateFill;
     }
 }

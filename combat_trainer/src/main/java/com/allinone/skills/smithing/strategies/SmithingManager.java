@@ -8,33 +8,45 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SmithingManager {
     
     private static SmithingItem manualOverride = null;
+    private static final Set<SmithingItem> blacklistedItems = new HashSet<>();
 
     public static SmithingItem getBestItem() {
-        if (manualOverride != null) return manualOverride;
+        if (manualOverride != null && !blacklistedItems.contains(manualOverride)) return manualOverride;
 
         int level = Skills.getRealLevel(Skill.SMITHING);
         
-        // Simple logic: return the highest level item we can make
-        // In a real bot, we would check bank contents to see what supplies we have
-        // For now, we assume we want to do the highest level content
-        
-        // Prioritize Forging if we have bars? No, simpler to just pick best possible by level.
-        // Actually, without checking bank, we might pick something we can't make.
-        // Let's stick to a safe default progression or let the strategy be:
-        // "Best item I have materials for, otherwise Best item by level"
-        
         return Arrays.stream(SmithingItem.values())
+                .filter(i -> !blacklistedItems.contains(i))
                 .filter(i -> i.getLevelRequired() <= level)
                 .sorted(Comparator.comparingInt(SmithingItem::getLevelRequired).reversed())
                 .findFirst()
-                .orElse(SmithingItem.BRONZE_BAR);
+                .orElse(null); // Return null if nothing found
     }
     
     public static void setManualOverride(SmithingItem item) {
         manualOverride = item;
+    }
+    
+    public static void blacklist(SmithingItem item) {
+        blacklistedItems.add(item);
+    }
+    
+    public static void blacklistType(com.allinone.skills.smithing.data.SmithingType type) {
+        for (SmithingItem item : SmithingItem.values()) {
+            if (item.getType() == type) {
+                blacklistedItems.add(item);
+            }
+        }
+    }
+    
+    public static void clearBlacklist() {
+        blacklistedItems.clear();
     }
 
     public static com.allinone.skills.smithing.data.SmithingLocation getBestLocation(com.allinone.skills.smithing.data.SmithingType type) {
