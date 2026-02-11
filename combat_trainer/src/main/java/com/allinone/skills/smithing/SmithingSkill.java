@@ -9,6 +9,7 @@ import com.allinone.skills.smithing.nodes.BankSmithingNode;
 import com.allinone.skills.smithing.nodes.SmeltNode;
 import com.allinone.skills.smithing.nodes.SmithItemNode;
 import com.allinone.skills.smithing.nodes.TravelToSmithingLocationNode;
+import com.allinone.framework.nodes.DismissDialogNode;
 import com.allinone.ui.painters.SmithingPainter;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -45,6 +46,11 @@ public class SmithingSkill extends AbstractSkillSet {
              new SmithItemNode(blackboard)
          );
 
-         rootNode = new Sequence(bank, travel, action);
+         Node smithSequence = new Sequence(bank, travel, action);
+
+         rootNode = new Selector(
+             new DismissDialogNode(), // Priority: Handle level-up and other dialogs
+             smithSequence
+         );
     }
 }

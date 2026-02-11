@@ -1,13 +1,9 @@
 package com.allinone.skills.woodcutting.nodes;
 
-import com.allinone.framework.AntiBan;
 import com.allinone.framework.Blackboard;
 import com.allinone.framework.LeafNode;
 import com.allinone.framework.Status;
-import com.allinone.skills.woodcutting.data.TreeType;
 import org.dreambot.api.methods.interactive.GameObjects;
-import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.wrappers.interactive.GameObject;
 
 import com.allinone.skills.woodcutting.data.WoodcuttingSpot;
@@ -25,17 +21,28 @@ public class FindTreeNode extends LeafNode {
         WoodcuttingSpot spot = blackboard.getCurrentWoodcuttingSpot();
         if (spot == null) return Status.FAILURE;
         
+        // If we already have a valid tree, reuse it
+        GameObject existing = blackboard.getCurrentObject();
+        if (existing != null && existing.exists()
+                && existing.getName() != null
+                && existing.getName().equals(spot.getTreeType().getTreeName())
+                && spot.getArea().contains(existing)) {
+            return Status.SUCCESS;
+        }
+
         // Find tree within the defined area
-        GameObject tree = GameObjects.closest(t -> 
-            t != null && 
+        GameObject tree = GameObjects.closest(t ->
+            t != null &&
+            t.getName() != null &&
             t.getName().equals(spot.getTreeType().getTreeName()) &&
-            spot.getArea().contains(t)
+            spot.getArea().contains(t) &&
+            t.hasAction("Chop down")
         );
-        
+
         if (tree != null) {
             blackboard.setCurrentObject(tree);
             blackboard.setCurrentStatus("Found tree: " + tree.getName());
-            AntiBan.sleepStatic(800, 400); // Short pause before next action
+            blackboard.getAntiBan().sleep(600, 250);
             return Status.SUCCESS;
         }
         

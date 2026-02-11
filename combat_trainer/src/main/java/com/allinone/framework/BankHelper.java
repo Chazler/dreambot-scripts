@@ -195,19 +195,18 @@ public class BankHelper {
 
     private static void openBankOrTravel() {
         BankLocation nearest = BankLocation.getNearest(Players.getLocal());
-        
+
         if (nearest == null) {
-             Logger.log("Critical Error: No bank location found.");
-             org.dreambot.api.script.ScriptManager.getScriptManager().stop();
-             return;
+            Logger.log("Critical Error: No bank location found.");
+            org.dreambot.api.script.ScriptManager.getScriptManager().stop();
+            return;
         }
 
-        // Safety Check: Ensure we are actually near a bank (as expected by script logic)
-        // We use getArea(1) to approximate the center point
+        // If bank is far, stopping the script
         if (nearest.getArea(1).getCenter().distance(Players.getLocal()) > 20) {
-             Logger.log("Critical Error: Nearest bank is too far (>20 tiles). We should have traveled there via Nodes.");
-             org.dreambot.api.script.ScriptManager.getScriptManager().stop();
-             return;
+            Logger.log("Critical Error: Nearest bank is too far (>20 tiles). We should have traveled there via Nodes.");
+            org.dreambot.api.script.ScriptManager.getScriptManager().stop();
+            return;
         }
 
         if (nearest.getArea(10).contains(Players.getLocal())) {
@@ -215,9 +214,8 @@ public class BankHelper {
                 Sleep.sleepUntil(Bank::isOpen, 5000);
             }
         } else {
-             // Close enough to interact/walk short distance
-             Logger.log("Appraching bank...");
-             TravelHelper.travelTo(nearest.getArea(10));
+            Logger.log("Approaching bank...");
+            TravelHelper.travelTo(nearest.getArea(10));
         }
     }
 }

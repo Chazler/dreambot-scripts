@@ -8,6 +8,7 @@ import com.allinone.framework.Sequence;
 import com.allinone.skills.firemaking.nodes.BurnLogNode;
 import com.allinone.skills.firemaking.nodes.TravelToBurnAreaNode;
 import com.allinone.skills.firemaking.nodes.WithdrawLogsNode;
+import com.allinone.framework.nodes.DismissDialogNode;
 import com.allinone.ui.painters.FiremakingPainter;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -39,6 +40,7 @@ public class FiremakingSkill extends AbstractSkillSet {
          Node burnSequence = new Sequence(travel, burn);
 
          rootNode = new Selector(
+            new DismissDialogNode(), // Priority: Handle level-up and other dialogs
             withdrawLogs,
             burnSequence
          );

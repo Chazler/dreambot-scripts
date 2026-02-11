@@ -6,6 +6,7 @@ import com.allinone.framework.Node;
 import com.allinone.framework.Selector;
 import com.allinone.framework.Sequence;
 import com.allinone.framework.nodes.BankItemsNode;
+import com.allinone.framework.nodes.DismissDialogNode;
 import com.allinone.framework.nodes.DropItemsNode;
 import com.allinone.framework.nodes.EnsureLoadoutNode;
 import com.allinone.framework.loadout.MiningLoadout;
@@ -60,6 +61,7 @@ public class MiningSkill extends AbstractSkillSet {
          );
 
          rootNode = new Selector(
+             new DismissDialogNode(), // Priority: Handle level-up and other dialogs
              updateStrategy,   // Always ensure we target correct spot
              ensurePickaxe,    // Priority: Ensure we have a pickaxe
              bankOre,          // Priority: Bank if full & banking enabled

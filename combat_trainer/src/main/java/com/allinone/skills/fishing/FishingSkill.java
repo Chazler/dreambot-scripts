@@ -6,6 +6,7 @@ import com.allinone.framework.Node;
 import com.allinone.framework.Selector;
 import com.allinone.framework.Sequence;
 import com.allinone.framework.nodes.BankItemsNode;
+import com.allinone.framework.nodes.DismissDialogNode;
 import com.allinone.framework.nodes.DropItemsNode;
 import com.allinone.framework.nodes.EnsureLoadoutNode;
 import com.allinone.framework.loadout.FishingLoadout;
@@ -84,6 +85,7 @@ public class FishingSkill extends AbstractSkillSet {
          );
 
          rootNode = new Selector(
+             new DismissDialogNode(), // Priority: Handle level-up and other dialogs
              updateStrategy,
              ensureGear,   // Priority: Ensure gear
              bankFish,

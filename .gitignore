@@ -26,3 +26,5 @@ combat_trainer/tmpclaude-*
 combat_trainer/target/maven-archiver/*
 combat_trainer/target/maven-status/*
 combat_trainer/target/surefire-reports/*
+combat_trainer/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+combat_trainer/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst

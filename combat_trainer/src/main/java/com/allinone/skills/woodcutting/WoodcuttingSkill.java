@@ -6,6 +6,7 @@ import com.allinone.framework.Node;
 import com.allinone.framework.Selector;
 import com.allinone.framework.Sequence;
 import com.allinone.framework.nodes.BankItemsNode;
+import com.allinone.framework.nodes.DismissDialogNode;
 import com.allinone.framework.nodes.DropItemsNode;
 import com.allinone.framework.nodes.EnsureLoadoutNode;
 import com.allinone.framework.loadout.WoodcuttingLoadout;
@@ -63,6 +64,7 @@ public class WoodcuttingSkill extends AbstractSkillSet {
          );
 
          rootNode = new Selector(
+             new DismissDialogNode(), // Priority: Handle level-up and other dialogs
              ensureAxe,      // Priority: Ensure we have an axe
              updateStrategy,  // Always ensure we target correct spot
              collectNests,    // Priority: Bird nests

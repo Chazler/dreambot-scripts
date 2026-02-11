@@ -57,6 +57,7 @@ com\allinone\framework\loadout\LoadoutItems$Ranged.class
 com\allinone\skills\smithing\nodes\TravelToSmithingLocationNode.class
 com\allinone\framework\AntiBan.class
 com\allinone\skills\combat\CombatSkill.class
+com\allinone\framework\nodes\DismissDialogNode.class
 com\allinone\ui\SkillSelectorOverlay.class
 com\allinone\skills\combat\strategies\LocationScorer$ScoredLocation.class
 com\allinone\ui\painters\SkillPainter.class
