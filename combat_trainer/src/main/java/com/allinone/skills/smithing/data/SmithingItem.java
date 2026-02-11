@@ -12,37 +12,37 @@ public enum SmithingItem {
     RUNITE_BAR(SmithingType.SMELTING, "Runite bar", 85, "Runite ore", 1, "Coal", 8),
 
     // FORGING - BRONZE
-    BRONZE_KNIFE(SmithingType.FORGING, "Bronze knife", 7, "Bronze bar", 1, null, 0),
+    BRONZE_KNIFE(SmithingType.FORGING, "Bronze dagger", 7, "Bronze bar", 1, null, 0),
     BRONZE_KITESHIELD(SmithingType.FORGING, "Bronze kiteshield", 12, "Bronze bar", 3, null, 0),
     BRONZE_PLATELEGS(SmithingType.FORGING, "Bronze platelegs", 16, "Bronze bar", 3, null, 0),
     BRONZE_PLATEBODY(SmithingType.FORGING, "Bronze platebody", 18, "Bronze bar", 5, null, 0),
 
     // FORGING - IRON
-    IRON_KNIFE(SmithingType.FORGING, "Iron knife", 22, "Iron bar", 1, null, 0),
+    IRON_KNIFE(SmithingType.FORGING, "Iron dagger", 22, "Iron bar", 1, null, 0),
     IRON_KITESHIELD(SmithingType.FORGING, "Iron kiteshield", 27, "Iron bar", 3, null, 0),
     IRON_PLATELEGS(SmithingType.FORGING, "Iron platelegs", 31, "Iron bar", 3, null, 0),
     IRON_PLATEBODY(SmithingType.FORGING, "Iron platebody", 33, "Iron bar", 5, null, 0),
 
     // FORGING - STEEL
-    STEEL_KNIFE(SmithingType.FORGING, "Steel knife", 37, "Steel bar", 1, null, 0),
+    STEEL_KNIFE(SmithingType.FORGING, "Steel dagger", 37, "Steel bar", 1, null, 0),
     STEEL_KITESHIELD(SmithingType.FORGING, "Steel kiteshield", 42, "Steel bar", 3, null, 0),
     STEEL_PLATELEGS(SmithingType.FORGING, "Steel platelegs", 46, "Steel bar", 3, null, 0),
     STEEL_PLATEBODY(SmithingType.FORGING, "Steel platebody", 48, "Steel bar", 5, null, 0),
 
     // FORGING - MITHRIL
-    MITHRIL_KNIFE(SmithingType.FORGING, "Mithril knife", 57, "Mithril bar", 1, null, 0),
+    MITHRIL_KNIFE(SmithingType.FORGING, "Mithril dagger", 57, "Mithril bar", 1, null, 0),
     MITHRIL_KITESHIELD(SmithingType.FORGING, "Mithril kiteshield", 62, "Mithril bar", 3, null, 0),
     MITHRIL_PLATELEGS(SmithingType.FORGING, "Mithril platelegs", 66, "Mithril bar", 3, null, 0),
     MITHRIL_PLATEBODY(SmithingType.FORGING, "Mithril platebody", 68, "Mithril bar", 5, null, 0),
 
     // FORGING - ADAMANT
-    ADAMANT_KNIFE(SmithingType.FORGING, "Adamant knife", 77, "Adamantite bar", 1, null, 0),
+    ADAMANT_KNIFE(SmithingType.FORGING, "Adamant dagger", 77, "Adamantite bar", 1, null, 0),
     ADAMANT_KITESHIELD(SmithingType.FORGING, "Adamant kiteshield", 82, "Adamantite bar", 3, null, 0),
     ADAMANT_PLATELEGS(SmithingType.FORGING, "Adamant platelegs", 86, "Adamantite bar", 3, null, 0),
     ADAMANT_PLATEBODY(SmithingType.FORGING, "Adamant platebody", 88, "Adamantite bar", 5, null, 0),
 
     // FORGING - RUNE
-    RUNE_KNIFE(SmithingType.FORGING, "Rune knife", 92, "Runite bar", 1, null, 0),
+    RUNE_KNIFE(SmithingType.FORGING, "Rune dagger", 92, "Runite bar", 1, null, 0),
     RUNE_KITESHIELD(SmithingType.FORGING, "Rune kiteshield", 97, "Runite bar", 3, null, 0),
     RUNE_PLATELEGS(SmithingType.FORGING, "Rune platelegs", 99, "Runite bar", 3, null, 0),
     RUNE_PLATEBODY(SmithingType.FORGING, "Rune platebody", 99, "Runite bar", 5, null, 0);

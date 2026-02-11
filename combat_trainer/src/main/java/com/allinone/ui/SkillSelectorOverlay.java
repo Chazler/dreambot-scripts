@@ -3,11 +3,14 @@ package com.allinone.ui;
 import com.allinone.AllInOneScript;
 import com.allinone.framework.SkillSet;
 import org.dreambot.api.Client;
+import org.dreambot.api.script.listener.HumanMouseListener;
+import org.dreambot.api.script.listener.PaintListener;
+import org.dreambot.api.utilities.Logger;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class SkillSelectorOverlay implements MouseListener {
+public class SkillSelectorOverlay implements HumanMouseListener, PaintListener {
 
     private final AllInOneScript script;
     private final Rectangle area;
@@ -31,10 +34,16 @@ public class SkillSelectorOverlay implements MouseListener {
         this.area = new Rectangle(0, 0, 0, 0); 
     }
 
+    @Override
     public void onPaint(Graphics g) {
         int width = Client.getCanvas().getWidth();
+        // Shift higher up. 
+        // Minimap is usually top right.
+        // If we want it "over" the minimap section, we should be near Y=20-150?
+        // Let's place it at Y=10
+        
         int baseX = width - 180; // Right aligned
-        int baseY = 160; // Below minimap roughly
+        int baseY = 10; // Top right, overlaying minimap area slightly if expanded
         
         // Setup Main Panel
         int rowHeight = 25;
@@ -84,7 +93,7 @@ public class SkillSelectorOverlay implements MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void onMouseClicked(MouseEvent e) {
         Point p = e.getPoint();
         
         // Handle Toggle
@@ -105,7 +114,7 @@ public class SkillSelectorOverlay implements MouseListener {
         if (isExpanded && skillButtons != null) {
             java.util.List<SkillSet> skills = script.getAvailableSkills();
             for (int i = 0; i < skillButtons.length; i++) {
-                if (skillButtons[i].contains(p)) {
+                if (skillButtons[i] != null && skillButtons[i].contains(p)) {
                     SkillSet selected = skills.get(i);
                     script.setCurrentSkill(selected);
                     isExpanded = false;
@@ -116,8 +125,8 @@ public class SkillSelectorOverlay implements MouseListener {
         }
     }
 
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mouseExited(MouseEvent e) {}
+    @Override public void onMousePressed(MouseEvent e) {}
+    @Override public void onMouseReleased(MouseEvent e) {}
+    @Override public void onMouseEntered(MouseEvent e) {}
+    @Override public void onMouseExited(MouseEvent e) {}
 }

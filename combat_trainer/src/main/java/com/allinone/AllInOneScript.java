@@ -75,11 +75,40 @@ public class AllInOneScript extends AbstractScript {
         
         // 5. Initialize Overlay
         overlay = new SkillSelectorOverlay(this);
-        Client.getCanvas().addMouseListener(overlay);
+        getScriptManager().addListener(overlay);
         
         Logger.log("Initialization Complete.");
     }
+
+    public List<SkillSet> getAvailableSkills() {
+        return availableSkills;
+    }
+
+    public SkillSet getCurrentSkill() {
+        return currentSkill;
+    }
+
+    public void addTime(long millis) {
+        switchInterval += millis;
+        Logger.log("Added " + (millis / 1000 / 60) + " minutes to the timer.");
+    }
+
+    public void setCurrentSkill(SkillSet skill) {
+        if (skill == null) return;
+        
+        currentSkill = skill;
+        if (blackboard != null) blackboard.reset();
+        currentSkill.onStart(blackboard);
+        
+        // Reset Timer
+        int seconds = MIN_SWITCH_TIME_SEC + random.nextInt(MAX_SWITCH_TIME_SEC - MIN_SWITCH_TIME_SEC);
+        switchInterval = seconds * 1000L;
+        lastSwitchTime = System.currentTimeMillis();
+        
+        Logger.log("Manually Switched to Skill: " + currentSkill.getName());
+    }
     
+    // Internal weighted selection
     private void pickNextSkill(SkillSet excludeSkill) {
         // Calculate Weights: Inverse of Level
         // Weight = 100 / (Level + 1)
@@ -171,51 +200,13 @@ public class AllInOneScript extends AbstractScript {
         if (currentSkill != null) {
             currentSkill.onPaint(g);
         }
-        if (overlay != null) {
-            overlay.onPaint(g);
-        }
         // Generic timer is now handled by SkillPainter
     }
 
     @Override
     public void onExit() {
-        if (overlay != null) {
-            Client.getCanvas().removeMouseListener(overlay);
-        }
         WebFinder.getWebFinder().clearCustomNodes();
         Logger.log("Cleared custom web nodes.");
-    }
-    
-    // UI Helpers
-    public List<SkillSet> getAvailableSkills() {
-        return availableSkills;
-    }
-    
-    public SkillSet getCurrentSkill() {
-        return currentSkill;
-    }
-    
-    public void addTime(long millis) {
-        this.switchInterval += millis;
-        Logger.log("Time added: " + (millis / 60000) + " minutes.");
-    }
-    
-    public void setCurrentSkill(SkillSet skill) {
-        if (skill != null && skill != currentSkill) {
-            Logger.log("Manually switching to: " + skill.getName());
-            
-            // Re-initialize specific skill
-            currentSkill = skill;
-            blackboard.reset();
-            currentSkill.onStart(blackboard);
-            
-            // Reset Timer logic for manual switch? 
-            // Or keep existing timer? 
-            // Usually switch means "Start fresh"
-            int seconds = MIN_SWITCH_TIME_SEC + random.nextInt(MAX_SWITCH_TIME_SEC - MIN_SWITCH_TIME_SEC);
-            switchInterval = seconds * 1000L;
-            lastSwitchTime = System.currentTimeMillis();
-        }
     }
 
     private void registerCustomNodes() {
