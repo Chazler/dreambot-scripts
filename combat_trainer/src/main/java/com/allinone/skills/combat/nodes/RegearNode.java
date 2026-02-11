@@ -48,6 +48,15 @@ public class RegearNode extends LeafNode {
              state = State.CHECK_STATE;
              return Status.SUCCESS;
         }
+        
+        // Safety: Ensure we are at the bank before attempting complex regear logic that requires bank interaction
+        org.dreambot.api.methods.container.impl.bank.BankLocation nearest = org.dreambot.api.methods.container.impl.bank.BankLocation.getNearest(org.dreambot.api.methods.interactive.Players.getLocal());
+        if (nearest != null && nearest.distance(org.dreambot.api.methods.interactive.Players.getLocal()) > 15) {
+            com.allinone.framework.TravelHelper.travelTo(nearest.getArea(10));
+            // Reset state if we had to travel, to ensure we start clean
+            state = State.CHECK_STATE; 
+            return Status.RUNNING;
+        }
 
         if (blackboard.isGearChecked()) {
             return Status.SUCCESS; 

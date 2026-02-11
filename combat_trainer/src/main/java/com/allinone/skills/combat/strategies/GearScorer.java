@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 public class GearScorer {
 
     public static List<GearItem> getBestLoadout(Skills skills) {
-        int att = skills.getRealLevel(Skill.ATTACK);
-        int def = skills.getRealLevel(Skill.DEFENCE);
+        int att = Skills.getRealLevel(Skill.ATTACK);
+        int def = Skills.getRealLevel(Skill.DEFENCE);
         
         // This is a simplified "best" algorithm. 
         // In a real scenario, you'd separate by slot and maximize bonuses.

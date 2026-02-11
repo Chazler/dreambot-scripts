@@ -67,12 +67,8 @@ public class TravelToSmithingLocationNode extends LeafNode {
              return Status.RUNNING;
         }
         
-        if (nearest != null) {
-             blackboard.setCurrentStatus("Walking to " + targetObjectName);
-             TravelHelper.travelTo(nearest.getTile().getArea(1));
-             return Status.RUNNING;
-        }
-
-        return Status.FAILURE;
+        blackboard.setCurrentStatus("Walking to " + targetObjectName);
+        TravelHelper.travelTo(nearest.getTile().getArea(1));
+        return Status.RUNNING;
     }
 }

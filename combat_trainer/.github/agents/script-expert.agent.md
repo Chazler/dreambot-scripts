@@ -19,10 +19,9 @@ You are an expert Java developer specialized in writing DreamBot scripts. Your g
 # Workflow
 
 1.  Analyze the user request.
-2.  Plan the necessary code changes.
-3.  If adding features, increment the version number in the script manifest.
-4.  Implement the code changes.
-5.  Make sure that there are no unused imports or variables in the code.
-6.  Run `mvn clean package`.
-7.  If there are compilation errors, fix them and repeat step 6 until the project compiles successfully.
-8.  When you finish implementing the feature or fixing the bug, provide a concise summary of the changes and suggest any further improvements or optimizations.
+2.  If adding features, increment the version number in the script manifest.
+3.  Implement the code changes.
+4.  Make sure that there are no unused imports or variables in the code.
+5.  Run `mvn clean package`.
+6.  If there are compilation errors, fix them and repeat step 5 until the project compiles successfully.
+7.  When you finish implementing the feature or fixing the bug, provide a concise summary of the changes and suggest any further improvements or optimizations.
