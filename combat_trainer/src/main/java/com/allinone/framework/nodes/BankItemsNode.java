@@ -56,6 +56,7 @@ public class BankItemsNode extends LeafNode {
         }
 
         if (Bank.depositAllExcept(i -> keepFilter.test(i))) {
+            Sleep.sleepUntil(() -> Inventory.isEmpty() || Inventory.onlyContains(i -> keepFilter.test(i)), 3000);
             if (Inventory.isEmpty() || Inventory.onlyContains(i -> keepFilter.test(i))) {
                 Bank.close();
                 return Status.SUCCESS;

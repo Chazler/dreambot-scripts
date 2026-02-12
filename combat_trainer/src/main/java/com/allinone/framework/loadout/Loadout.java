@@ -61,6 +61,10 @@ public abstract class Loadout {
         overrides.put(slot, itemName);
     }
     
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
+
     // --- Internal Accessors ---
 
     public boolean hasOverride(Slot slot) {

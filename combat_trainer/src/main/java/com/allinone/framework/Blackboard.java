@@ -7,6 +7,7 @@ import com.allinone.skills.combat.data.LocationDef;
 import com.allinone.skills.woodcutting.data.WoodcuttingSpot;
 import com.allinone.skills.mining.data.MiningSpot;
 import com.allinone.skills.fishing.data.FishingSpot;
+import com.allinone.skills.ranged.data.RangedTrainingLocation;
 
 /**
  * Shared state for the Behavior Tree
@@ -32,6 +33,9 @@ public class Blackboard {
     // Fishing
     private FishingSpot currentFishingSpot;
 
+    // Ranged
+    private RangedTrainingLocation currentRangedLocation;
+
     private final AntiBan antiBan = new AntiBan();
 
     // Timer
@@ -52,6 +56,7 @@ public class Blackboard {
         currentMiningSpot = null;
         currentFiremakingLog = null;
         currentFishingSpot = null;
+        currentRangedLocation = null;
         forceFiremakingRelocate = false;
         forceStopSkill = false;
         currentStatus = "Initializing...";
@@ -68,6 +73,9 @@ public class Blackboard {
 
     public FishingSpot getCurrentFishingSpot() { return currentFishingSpot; }
     public void setCurrentFishingSpot(FishingSpot spot) { this.currentFishingSpot = spot; }
+
+    public RangedTrainingLocation getCurrentRangedLocation() { return currentRangedLocation; }
+    public void setCurrentRangedLocation(RangedTrainingLocation loc) { this.currentRangedLocation = loc; }
 
     public WoodcuttingSpot getCurrentWoodcuttingSpot() {
         return currentWoodcuttingSpot;

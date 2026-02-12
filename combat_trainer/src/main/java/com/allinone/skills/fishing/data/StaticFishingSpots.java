@@ -27,13 +27,10 @@ public class StaticFishingSpots {
                   FishingMethod.FLY, 20, false, false, "Feather", 60.0));
 
         // Lobsters - Karamja (F2P) - Level 40
-        // ...
-        // Let's add Cage Fishing at Catherby (Members)
         SPOTS.add(new FishingSpot("Cage Fishing spot", new Area(2835, 3428, 2860, 3434),
                   FishingMethod.CAGE, 40, true, true, null, 90.0));
                   
         // Sharks - Fishing Guild (Members) - Level 76
-        // Need guild access logic? Or just Catherby Sharks
         SPOTS.add(new FishingSpot("Net/Harpoon Fishing spot", new Area(2835, 3428, 2860, 3434),
                   FishingMethod.HARPOON, 76, true, true, null, 110.0)); // Catherby Sharks
     }

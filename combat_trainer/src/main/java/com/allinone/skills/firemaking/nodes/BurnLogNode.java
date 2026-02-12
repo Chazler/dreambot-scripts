@@ -67,7 +67,7 @@ public class BurnLogNode extends LeafNode {
 
         // 1. Look for "Forester's Campfire"
         GameObject forestersCampfire = GameObjects.closest(g ->
-            g != null && g.getName().equals("Forester's campfire") && g.distance(Players.getLocal()) < 8
+            g != null && g.getName() != null && g.getName().equals("Forester's Campfire") && g.distance(Players.getLocal()) < 15
         );
 
         if (forestersCampfire != null) {
@@ -142,7 +142,7 @@ public class BurnLogNode extends LeafNode {
             blackboard.getAntiBan().sleep(500, 200);
             Sleep.sleepUntil(() -> Players.getLocal().isAnimating(), 4000);
             Sleep.sleepUntil(() -> !Players.getLocal().isAnimating()
-                || GameObjects.closest("Forester's campfire") != null, 10000);
+                || GameObjects.closest("Forester's Campfire") != null, 10000);
             lastActivityTime = System.currentTimeMillis();
             return Status.RUNNING;
         }
@@ -169,7 +169,7 @@ public class BurnLogNode extends LeafNode {
         if (objs == null) return false;
         for (GameObject g : objs) {
             if (g != null && g.getName() != null
-                    && (g.getName().equals("Fire") || g.getName().equals("Daisy") || g.getName().contains("Femur"))) {
+                    && (g.getName().equals("Fire") || g.getName().equals("Daisy") || g.getName().contains("Femur") || g.getName().equals("Forester's Campfire"))) {
                 return true;
             }
         }

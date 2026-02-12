@@ -18,6 +18,8 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.wrappers.items.Item;
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 
 import java.util.function.Predicate;
 
@@ -50,10 +52,18 @@ public class FishingSkill extends AbstractSkillSet {
              int baitAmount = 0;
              if (spot.getMethod() == FishingMethod.BAIT) {
                  bait = "Fishing bait";
-                 baitAmount = 500;
              } else if (spot.getMethod() == FishingMethod.FLY) {
                  bait = "Feather";
-                 baitAmount = 500;
+             }
+
+             if (bait != null) {
+                 // Prevent banking simply to top up bait unless we are very low OR already at the bank
+                 int currentBait = Inventory.count(bait);
+                 if (currentBait < 20 || Bank.isOpen()) {
+                     baitAmount = 500;
+                 } else {
+                     baitAmount = currentBait;
+                 }
              }
              return new FishingLoadout(tool, bait, baitAmount);
          });

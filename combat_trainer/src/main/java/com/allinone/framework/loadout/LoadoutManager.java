@@ -5,6 +5,8 @@ import com.allinone.framework.ItemTarget;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +52,8 @@ public class LoadoutManager {
             if (choice != null) {
                 // If it's an item for a wearable slot, we target 1 and equip it
                 // Logic for distinct stackables (Arrows) would go here or be config based
-                boolean isStackable = slot == Slot.AMMO || slot == Slot.WEAPON; // Simplified assumption
-                int amount = isStackable ? 1000 : 1; 
+                boolean isStackable = slot == Slot.AMMO;
+                int amount = isStackable ? 1000 : 1;
                 
                 // Construct target: Name, Amount, Equip?, Fill?
                 targets.add(new ItemTarget(choice, amount, true, false));
@@ -78,19 +80,85 @@ public class LoadoutManager {
     }
 
     public static boolean fulfill(Loadout loadout) {
-        // We defer to BankHelper, but first we must calculate WHAT to get.
-        // Determining the 'Best Available' usually requires checking the Bank to see if we own it.
-        // Ideally, we ensure bank is open first if we aren't fully equipped.
-        
-        // This is a simplified integration:
-        // 1. We assume BankHelper can handle 'Bank.contains' checks if bank is open.
-        // 2. We resolve the abstract Loadout into concrete ItemTargets.
-        
-        // Note: If resolve() returns items we assume exist, BankHelper.ensure() will try to get them.
+        // PHASE 1: If equippable items are already in inventory, equip them FIRST.
+        // This must happen before opening bank to prevent the open/close loop
+        // where fulfill() opens bank and ensure() closes it to equip.
+        boolean hasItemsToEquip = false;
+        for (Slot slot : loadout.getDefinedSlots()) {
+            if (loadout.hasOverride(slot)) {
+                String name = loadout.getOverride(slot);
+                if (!Equipment.contains(name) && Inventory.contains(name)) {
+                    hasItemsToEquip = true;
+                    break;
+                }
+            } else {
+                for (LoadoutItem candidate : loadout.getCandidates(slot)) {
+                    if (!candidate.meetsRequirements()) continue;
+                    String name = candidate.getName();
+                    if (Equipment.contains(name)) break; // Slot already satisfied
+                    if (Inventory.contains(name)) {
+                        hasItemsToEquip = true;
+                        break;
+                    }
+                }
+                if (hasItemsToEquip) break;
+            }
+        }
+
+        if (hasItemsToEquip) {
+            if (Bank.isOpen()) {
+                Bank.close();
+                Sleep.sleepUntil(() -> !Bank.isOpen(), 3000);
+                return false;
+            }
+            for (Slot slot : loadout.getDefinedSlots()) {
+                String nameToEquip = null;
+                if (loadout.hasOverride(slot)) {
+                    String name = loadout.getOverride(slot);
+                    if (!Equipment.contains(name) && Inventory.contains(name)) {
+                        nameToEquip = name;
+                    }
+                } else {
+                    for (LoadoutItem candidate : loadout.getCandidates(slot)) {
+                        if (!candidate.meetsRequirements()) continue;
+                        String name = candidate.getName();
+                        if (Equipment.contains(name)) break;
+                        if (Inventory.contains(name)) {
+                            nameToEquip = name;
+                            break;
+                        }
+                    }
+                }
+                if (nameToEquip != null) {
+                    final String equipName = nameToEquip;
+                    Logger.log("Equipping: " + equipName);
+                    if (!Inventory.interact(equipName, "Wear")) {
+                        if (!Inventory.interact(equipName, "Wield")) {
+                            Inventory.interact(equipName, "Equip");
+                        }
+                    }
+                    Sleep.sleepUntil(() -> Equipment.contains(equipName), 3000);
+                }
+            }
+            return false;
+        }
+
+        // PHASE 2: Open bank for resolve + ensure operations.
+        // Only reached when nothing in inventory needs equipping.
+        if (!Bank.isOpen()) {
+            Bank.open();
+            Sleep.sleepUntil(Bank::isOpen, 5000);
+            if (!Bank.isOpen()) {
+                return false;
+            }
+        }
+
+        // PHASE 3: Resolve targets (bank is open) and delegate to ensure
         List<ItemTarget> targets = resolve(loadout);
-        
-        // Use the strict "Clean Equipment" = true because a Loadout fulfillment usually implies
-        // we want exactly this gear and nothing else.
+        if (targets.isEmpty()) {
+            return true;
+        }
+
         return BankHelper.ensure(targets, true);
     }
     
@@ -112,15 +180,15 @@ public class LoadoutManager {
             if (loadout.hasOverride(slot)) {
                 if (!Equipment.contains(loadout.getOverride(slot))) return false;
             } else {
-                 // Check if we are wearing ANY valid candidate
-                 boolean wearingAny = false;
-                 for (LoadoutItem cand : loadout.getCandidates(slot)) {
-                     if (Equipment.contains(cand.getName())) {
-                         wearingAny = true;
-                         break;
-                     }
-                 }
-                 if (!wearingAny) return false;
+                // Check if we are wearing ANY valid candidate
+                boolean wearingAny = false;
+                for (LoadoutItem cand : loadout.getCandidates(slot)) {
+                    if (Equipment.contains(cand.getName())) {
+                        wearingAny = true;
+                        break;
+                    }
+                }
+                if (!wearingAny) return false;
             }
         }
         

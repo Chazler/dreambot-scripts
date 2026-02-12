@@ -23,8 +23,8 @@ public class WithdrawLogsNode extends LeafNode {
 
     @Override
     public Status execute() {
-        // Robust check: Check for any items containing "logs" (case insensitive)
-        boolean hasLogs = Inventory.contains(i -> i != null && i.getName() != null && (i.getName().toLowerCase().contains("logs") || i.getName().equalsIgnoreCase("Logs")));
+        // Robust check: Check for any items containing "logs" (case insensitive) and NOT noted
+        boolean hasLogs = Inventory.contains(i -> i != null && i.getName() != null && !i.isNoted() && (i.getName().toLowerCase().contains("logs") || i.getName().equalsIgnoreCase("Logs")));
         boolean hasTinderbox = Inventory.contains("Tinderbox");
 
         if (hasLogs && hasTinderbox) {
@@ -43,20 +43,19 @@ public class WithdrawLogsNode extends LeafNode {
             return Status.RUNNING;
         }
         
-        // Smart Deposit: Only deposit junk (non-logs, non-tinderbox)
-        // Check filtering specifically for non-null items
+        // Smart Deposit: Deposit junk (anything NOT Tinderbox and NOT un-noted Logs)
         boolean hasJunk = Inventory.all().stream().anyMatch(i -> 
             i != null && 
             i.getName() != null &&
             !i.getName().equals("Tinderbox") && 
-            !i.getName().toLowerCase().contains("logs")
+            (!i.getName().toLowerCase().contains("logs") || i.isNoted())
         );
         
         if (hasJunk) {
-            log("Junked detected, depositing.");
-            Bank.depositAllExcept(i -> i != null && i.getName() != null && (i.getName().equals("Tinderbox") || i.getName().toLowerCase().contains("logs")));
+            log("Junk detected (e.g. noted logs or random items), depositing.");
+            Bank.depositAllExcept(i -> i != null && i.getName() != null && (i.getName().equals("Tinderbox") || (i.getName().toLowerCase().contains("logs") && !i.isNoted())));
             Sleep.sleepUntil(() -> {
-                return !Inventory.contains(i -> i != null && i.getName() != null && !i.getName().equals("Tinderbox") && !i.getName().toLowerCase().contains("logs"));
+                return !Inventory.contains(i -> i != null && i.getName() != null && !i.getName().equals("Tinderbox") && (!i.getName().toLowerCase().contains("logs") || i.isNoted()));
             }, 2000);
             return Status.RUNNING;
         }

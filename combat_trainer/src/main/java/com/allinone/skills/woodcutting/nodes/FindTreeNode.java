@@ -25,7 +25,7 @@ public class FindTreeNode extends LeafNode {
         GameObject existing = blackboard.getCurrentObject();
         if (existing != null && existing.exists()
                 && existing.getName() != null
-                && existing.getName().equals(spot.getTreeType().getTreeName())
+                && (existing.getName().equals(spot.getTreeType().getTreeName()) || existing.getName().equals(spot.getTreeType().getTreeName() + " tree"))
                 && spot.getArea().contains(existing)) {
             return Status.SUCCESS;
         }
@@ -34,7 +34,7 @@ public class FindTreeNode extends LeafNode {
         GameObject tree = GameObjects.closest(t ->
             t != null &&
             t.getName() != null &&
-            t.getName().equals(spot.getTreeType().getTreeName()) &&
+            (t.getName().equals(spot.getTreeType().getTreeName()) || t.getName().equals(spot.getTreeType().getTreeName() + " tree")) &&
             spot.getArea().contains(t) &&
             t.hasAction("Chop down")
         );

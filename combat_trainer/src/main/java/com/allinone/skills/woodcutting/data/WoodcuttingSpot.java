@@ -1,7 +1,6 @@
 package com.allinone.skills.woodcutting.data;
 
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.map.Tile;
 
 public class WoodcuttingSpot {
     private final String name;
@@ -38,5 +37,9 @@ public class WoodcuttingSpot {
 
     public boolean isMembers() {
         return isMembers;
+    }
+
+    public Area getBankArea() {
+        return bankArea;
     }
 }

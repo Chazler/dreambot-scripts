@@ -5,6 +5,9 @@ import com.allinone.framework.Blackboard;
 import com.allinone.framework.Node;
 import com.allinone.framework.Selector;
 import com.allinone.framework.Sequence;
+import com.allinone.framework.nodes.DismissDialogNode;
+import com.allinone.framework.nodes.EnsureLoadoutNode;
+import com.allinone.framework.loadout.CombatLoadout;
 import com.allinone.skills.combat.nodes.*;
 import com.allinone.ui.painters.CombatPainter;
 import org.dreambot.api.utilities.Logger;
@@ -31,7 +34,7 @@ public class CombatSkill extends AbstractSkillSet {
         painter = new CombatPainter(blackboard, startTime);
 
         Node checkHealth = new CheckHealthNode();
-        Node regear = new RegearNode(blackboard);
+        Node regear = new EnsureLoadoutNode(CombatLoadout::new, true);
 
         Node updateStrategy = new UpdateStrategyNode(blackboard);
         Node manageStyle = new ManageAttackStyleNode(blackboard);
@@ -49,6 +52,7 @@ public class CombatSkill extends AbstractSkillSet {
         );
 
         rootNode = new Selector(
+            new DismissDialogNode(),
             checkHealth,
             combatSequence
         );
