@@ -42,8 +42,8 @@ public class ManageAttackStyleNode extends LeafNode {
         if (def < defCap && (def < att || def < str)) {
             targetSkill = Skill.DEFENCE;
         } 
-        // Priority 2: Strength Focus (Keep Str ahead of Att by up to 10 levels)
-        else if (str < att + 10) {
+        // Priority 2: Strength Focus (Keep Str ahead of Att by up to 5 levels)
+        else if (str < att + 5) {
             targetSkill = Skill.STRENGTH;
         } 
         // Priority 3: Catch up Attack (Accuracy)

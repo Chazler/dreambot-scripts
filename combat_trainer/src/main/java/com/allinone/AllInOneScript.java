@@ -3,18 +3,20 @@ package com.allinone;
 import com.allinone.framework.Blackboard;
 import com.allinone.framework.SkillSet;
 import com.allinone.skills.combat.CombatSkill;
+import com.allinone.skills.cooking.CookingSkill;
+import com.allinone.skills.crafting.CraftingSkill;
 import com.allinone.skills.woodcutting.WoodcuttingSkill;
 import com.allinone.skills.fishing.FishingSkill;
+import com.allinone.skills.magic.MagicSkill;
 import com.allinone.skills.firemaking.FiremakingSkill;
 import com.allinone.skills.mining.MiningSkill;
+import com.allinone.skills.ranged.RangedSkill;
+import com.allinone.skills.smithing.SmithingSkill;
 import com.allinone.framework.nodes.custom.EdgevilleTrapdoorNode;
 import com.allinone.framework.nodes.custom.EdgevilleLadderNode;
 import com.allinone.framework.nodes.custom.LumbridgeSwampEntranceNode;
 import com.allinone.framework.nodes.custom.LumbridgeSwampExitNode;
-import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
-import org.dreambot.api.methods.walking.web.node.AbstractWebNode;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
@@ -65,7 +67,11 @@ public class AllInOneScript extends AbstractScript {
         availableSkills.add(new FishingSkill());
         availableSkills.add(new FiremakingSkill());
         availableSkills.add(new MiningSkill());
-        availableSkills.add(new com.allinone.skills.smithing.SmithingSkill());
+        availableSkills.add(new SmithingSkill());
+        availableSkills.add(new CookingSkill());
+        availableSkills.add(new MagicSkill()); 
+        availableSkills.add(new CraftingSkill());
+        availableSkills.add(new RangedSkill());
         
         // 3. Initial Selection
         pickNextSkill(null);

@@ -39,6 +39,8 @@ public class CombatSkill extends AbstractSkillSet {
         Node updateStrategy = new UpdateStrategyNode(blackboard);
         Node manageStyle = new ManageAttackStyleNode(blackboard);
         Node travel = new TravelNode(blackboard);
+        Node loot = new LootNode(blackboard);
+        Node bury = new BuryBonesNode(blackboard);
         Node acquireTarget = new AcquireTargetNode(blackboard);
         Node attack = new AttackNode(blackboard);
 
@@ -46,6 +48,8 @@ public class CombatSkill extends AbstractSkillSet {
             updateStrategy,
             regear,
             manageStyle,
+            loot,
+            bury,
             travel,
             acquireTarget,
             attack

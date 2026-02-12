@@ -33,7 +33,7 @@ public class CombatPainter extends SkillPainter {
     }
 
     @Override
-    protected void paintCustom(Graphics g, int x, int y) {
+    public void paint(Graphics g) {
         if (!Client.isLoggedIn()) return;
 
         // Lazy init XP for all combat skills
@@ -44,40 +44,103 @@ public class CombatPainter extends SkillPainter {
             initXp = true;
         }
 
-        // Multi-skill XP display
-        g.setFont(new Font("Consolas", Font.PLAIN, 11));
-        int rowY = y;
-        for (Skill s : COMBAT_SKILLS) {
-            drawCombatSkillRow(g, s, x, rowY);
-            rowY += 16;
-        }
+        // Chatbox background
+        int x = 7;
+        int y = 345;
+        int width = 506;
+        int height = 129;
 
-        // Combat Monitor: Target info + HP bar
+        g.setColor(new Color(0, 0, 0, 220));
+        g.fillRect(x, y, width, height);
+
+        g.setColor(getBorderColor());
+        g.drawRect(x, y, width, height);
+
+        // -- LEFT COLUMN (Status & Info) --
+        int mx = x + 10;
+        int my = y + 20;
+
+        g.setColor(Color.ORANGE);
+        g.setFont(new Font("Verdana", Font.BOLD, 14));
+        g.drawString(getSkillName() + " Trainer", mx, my);
+
+        g.setFont(new Font("Verdana", Font.PLAIN, 12));
+        g.setColor(Color.WHITE);
+        my += 20;
+        g.drawString("Time Running: " + formatTime(System.currentTimeMillis() - startTime), mx, my);
+
+        my += 20;
+        long remaining = blackboard.getTimeRemaining();
+        String remStr = remaining > 0 ? formatTime(remaining) : "Switching...";
+        g.drawString("Time Left: " + remStr, mx, my);
+
+        my += 20;
+        g.drawString("Status: " + blackboard.getCurrentStatus(), mx, my);
+
+        // Combat Monitor (Target Info)
+        my += 20;
         if (Players.getLocal() != null) {
-            int col2X = x + 280;
-
             Character target = Players.getLocal().getInteractingCharacter();
             if (target != null) {
-                g.setColor(Color.YELLOW);
                 String tName = target.getName();
-                if (tName.length() > 15) tName = tName.substring(0, 15);
-                g.drawString("Target: " + tName, col2X, y);
+                if (tName != null && tName.length() > 15) tName = tName.substring(0, 15);
+                g.setColor(Color.YELLOW);
+                g.drawString("Target: " + (tName != null ? tName : "Unknown"), mx, my);
 
                 int hpPct = target.getHealthPercent();
-                int barY = y + 5;
+                // Draw simple bar below
+                int barY = my + 5;
+                int barW = 100;
+                int barH = 10;
+                
                 g.setColor(new Color(50, 0, 0));
-                g.fillRect(col2X, barY, 100, 12);
+                g.fillRect(mx, barY, barW, barH);
+                
                 g.setColor(hpPct > 50 ? Color.GREEN : (hpPct > 20 ? Color.ORANGE : Color.RED));
-                g.fillRect(col2X, barY, hpPct, 12);
+                g.fillRect(mx, barY, (int)(barW * (hpPct / 100.0)), barH);
+                
                 g.setColor(Color.WHITE);
-                g.drawRect(col2X, barY, 100, 12);
-                g.setFont(new Font("Verdana", Font.BOLD, 9));
-                g.drawString(hpPct + "%", col2X + 40, barY + 10);
+                g.drawRect(mx, barY, barW, barH);
             } else {
                 g.setColor(Color.GRAY);
-                g.drawString("Idle / Searching...", col2X, y);
+                g.drawString("Target: None", mx, my);
             }
         }
+
+        // -- RIGHT COLUMN (XP & Stats) --
+        int cx = x + 230; // Shift right
+        int cy = y + 20;
+
+        // Calculate Total XP
+        int totalXpGained = 0;
+        for (Skill s : COMBAT_SKILLS) {
+            int start = combatStartXp.getOrDefault(s, 0);
+            int current = Skills.getExperience(s);
+            if (current > start) {
+                totalXpGained += (current - start);
+            }
+        }
+        
+        long runTime = System.currentTimeMillis() - startTime;
+        int totalHourly = (int) (totalXpGained * 3600000.0 / Math.max(runTime, 1));
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Verdana", Font.BOLD, 12));
+        g.drawString(String.format("Total XP: %,d (%,d/h)", totalXpGained, totalHourly), cx, cy);
+
+        // Individual Skills
+        cy += 20;
+        g.setFont(new Font("Consolas", Font.PLAIN, 11));
+        
+        for (Skill s : COMBAT_SKILLS) {
+            drawCombatSkillRow(g, s, cx, cy);
+            cy += 15;
+        }
+    }
+
+    @Override
+    protected void paintCustom(Graphics g, int x, int y) {
+        // No-op, we overrode paint()
     }
 
     private void drawCombatSkillRow(Graphics g, Skill skill, int x, int y) {

@@ -49,8 +49,8 @@ public abstract class Loadout {
      */
     protected void setSlot(Slot slot, String... candidates) {
         List<LoadoutItem> items = Arrays.stream(candidates)
-                .map(LoadoutItem::new)
-                .collect(Collectors.toList());
+            .map(LoadoutItem::new)
+            .collect(Collectors.toList());
         slots.put(slot, items);
     }
 

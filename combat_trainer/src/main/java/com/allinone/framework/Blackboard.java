@@ -41,6 +41,7 @@ public class Blackboard {
     // Timer
     private long timeRemaining;
     private boolean forceStopSkill = false;
+    private org.dreambot.api.methods.map.Tile lastKillTile;
 
     public Blackboard() {
     }
@@ -60,7 +61,11 @@ public class Blackboard {
         forceFiremakingRelocate = false;
         forceStopSkill = false;
         currentStatus = "Initializing...";
+        lastKillTile = null;
     }
+
+    public void setLastKillTile(org.dreambot.api.methods.map.Tile tile) { this.lastKillTile = tile; }
+    public org.dreambot.api.methods.map.Tile getLastKillTile() { return lastKillTile; }
 
     public com.allinone.skills.firemaking.data.FiremakingLog getCurrentFiremakingLog() { return currentFiremakingLog; }
     public void setCurrentFiremakingLog(com.allinone.skills.firemaking.data.FiremakingLog log) { this.currentFiremakingLog = log; }

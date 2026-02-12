@@ -23,25 +23,25 @@ public enum RangedTrainingLocation {
         "Minotaurs (Stronghold)",
         new Area(new Tile(1856, 5213, 0), new Tile(1876, 5232, 0)),
         new String[]{"Minotaur"},
-        1, 50, false
+        20, 50, false
     ),
     HILL_GIANTS(
         "Hill Giants (Edgeville Dungeon)",
         new Area(new Tile(3095, 9826, 0), new Tile(3126, 9856, 0)),
         new String[]{"Hill Giant"},
-        25, 80, false
+        40, 80, false
     ),
     ROCK_CRABS(
         "Rock Crabs (Rellekka)",
         new Area(new Tile(2689, 3711, 0), new Tile(2727, 3733, 0)),
         new String[]{"Rock Crab"},
-        1, 99, true
+        20, 99, true
     ),
     SAND_CRABS(
         "Sand Crabs (Hosidius)",
         new Area(new Tile(1726, 3462, 0), new Tile(1782, 3478, 0)),
         new String[]{"Sand Crab"},
-        1, 99, true
+        30, 99, true
     );
 
     private final String name;

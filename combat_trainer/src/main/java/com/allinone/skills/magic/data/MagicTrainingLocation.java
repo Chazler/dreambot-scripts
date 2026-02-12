@@ -26,17 +26,11 @@ public enum MagicTrainingLocation {
         new String[]{"Goblin"},
         1, false
     ),
-    MONKS_EDGEVILLE(
-        "Monks (Edgeville Monastery)",
-        new Area(new Tile(3043, 3483, 0), new Tile(3060, 3500, 0)),
-        new String[]{"Monk"},
-        1, true
-    ),
     ROCK_CRABS(
         "Rock Crabs (Rellekka)",
         new Area(new Tile(2689, 3711, 0), new Tile(2727, 3733, 0)),
         new String[]{"Rock Crab"},
-        1, true
+        30, true
     );
 
     private final String name;

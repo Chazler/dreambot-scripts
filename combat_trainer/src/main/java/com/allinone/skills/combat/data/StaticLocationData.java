@@ -74,6 +74,19 @@ public class StaticLocationData {
             false
         ));
         
+        // Lumbridge Swamp Frogs (Giant & Big)
+        ALL_LOCATIONS.add(new LocationDef(
+            "Lumbridge Swamp Frogs",
+            new Area(3195, 3165, 3230, 3195),
+            Arrays.asList("Giant frog", "Big frog"),
+            13,
+            false,
+            8,
+            15000,
+            20,
+            false
+        ));
+        
         // Barbarian Village (Long Hall)
         ALL_LOCATIONS.add(new LocationDef(
             "Barbarian Village",

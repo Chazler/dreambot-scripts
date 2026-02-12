@@ -22,7 +22,7 @@ public class CombatLoadout extends Loadout {
     private static final EquipmentSlot[] COMBAT_SLOTS = {
         EquipmentSlot.WEAPON, EquipmentSlot.CHEST, EquipmentSlot.LEGS,
         EquipmentSlot.SHIELD, EquipmentSlot.HAT, EquipmentSlot.AMULET,
-        EquipmentSlot.FEET, EquipmentSlot.HANDS
+        EquipmentSlot.FEET, EquipmentSlot.HANDS, EquipmentSlot.CAPE, EquipmentSlot.RING
     };
 
     public CombatLoadout() {

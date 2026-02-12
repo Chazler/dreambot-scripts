@@ -13,6 +13,7 @@ C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skil
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\mining\nodes\MineRockNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\smithing\data\SmithingItem.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\AttackNode.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\BuryBonesNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\loadout\CombatLoadout.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\data\FishingSpot.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\magic\nodes\BankMagicNode.java
@@ -71,6 +72,7 @@ C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\fram
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\nodes\DismissDialogNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\mining\data\StaticMiningSpots.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\loadout\CookingLoadout.java
+C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\combat\nodes\LootNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\fishing\data\StaticFishingSpots.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\skills\smithing\nodes\SmeltNode.java
 C:\The Vault\Git\dreambot-scripts\combat_trainer\src\main\java\com\allinone\framework\AntiBan.java

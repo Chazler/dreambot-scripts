@@ -1,6 +1,7 @@
 com\allinone\skills\combat\data\StaticLocationData.class
 com\allinone\framework\Status.class
 com\allinone\ui\painters\CombatPainter.class
+com\allinone\skills\combat\nodes\BuryBonesNode.class
 com\allinone\skills\cooking\CookingSkill.class
 com\allinone\skills\firemaking\nodes\WithdrawLogsNode.class
 com\allinone\framework\loadout\CookingLoadout.class
@@ -132,6 +133,7 @@ com\allinone\framework\loadout\Slot.class
 com\allinone\framework\loadout\WoodcuttingLoadout.class
 com\allinone\ui\painters\SmithingPainter.class
 com\allinone\skills\cooking\strategies\CookingManager.class
+com\allinone\skills\combat\nodes\LootNode.class
 com\allinone\skills\fishing\data\FishingSpot.class
 com\allinone\skills\cooking\nodes\BankCookingNode.class
 com\allinone\framework\nodes\custom\LumbridgeSwampEntranceNode.class
